@@ -1,7 +1,14 @@
 const game = require('./common');
 const Player = require('./playerClass');
 const checkPlayLegality = require('./checkPlayLegality');
-module.exports = (io, socket) => {
+const applyCardEffects = require('./applyCardEffects');
+const parseCard = require('./parseCard');
+/** Creates socket.io event listeners for player requests.
+ * @param {httpServer} io The socket.io server
+ * @param {Socket} socket The socket that these event listeners will be assigned to
+ * @returns {void}
+*/
+function registerPlayerHandlers(io, socket) {
 	socket.on('disconnect', reason => {
 		console.log(`${new Date()} ${socket.id} disconnected. reason: ${reason}`);
 		const i = game.players.data.findIndex(x => x.idEquals(socket.id));
@@ -42,7 +49,14 @@ module.exports = (io, socket) => {
 
 		// 2.
 		if (nameExists && !idExists) {
-			game.players.data.find(x => x.nameEquals(name)).reconnect(socket.id);
+			try {
+				game.players.data.find(x => x.nameEquals(name)).reconnect(socket.id);
+			} catch (error) {
+				return cb(-2);
+				// -2 = name taken
+			}
+			socket.emit('game-info', game.generateGameInfo());
+			socket.emit('your-hand', game.players.data.find(x => x.nameEquals(name)).hand);
 			return cb(2);
 		}
 
@@ -57,23 +71,6 @@ module.exports = (io, socket) => {
 			return cb(4);
 		}
 	});
-	socket.on('play-cards', (cardsPlayed, cbLegal) => {
-		// 1 = wrong turn
-		// 2 = fake cards
-		// 3 = not an array
-		// 4 = too many cards
-		// 5 = not matching color or symbol
-		// 6 = illegal WD4
-		const playerIndex = game.players.data.findIndex(x => x.idEquals(socket.id));
-		if (playerIndex !== game.turnIndex.data) {
-			cbLegal(false, 1);
-		}
-		const player = game.players.data[playerIndex];
-		console.log(`${player.name} (${player.socketId}) wants to play card(s)`, cardsPlayed);
-		const result = checkPlayLegality(cardsPlayed, game.discardPileTopCard.data, player.hand);
-		console.log('legality:', result);
-		cbLegal(true);
-	});
 	socket.on('give-game-info', () => {
 		socket.emit('game-info', game.generateGameInfo());
 	});
@@ -81,3 +78,4 @@ module.exports = (io, socket) => {
 		cb(game.players.data.find(x => x.idEquals(socket.id))?.hand);
 	});
 }
+module.exports = registerPlayerHandlers;

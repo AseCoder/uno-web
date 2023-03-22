@@ -4,15 +4,24 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<link rel="stylesheet" href="master.css">
+	<title>UNO!</title>
 </head>
 <body>
 	<h1>welcome to uno</h1>
 	<p>enter name</p>
 	<input type="text" name="" id="name">
 	<button id="set-name">set name & join game</button>
-	<p>your hand:</p>
+	<div id="messages"></div>
+	<p>players:</p>
+	<div id="players"></div>
+	<p>the discard:</p>
+	<img src="" alt="" id="discard">
+	<p id="discardcolor">color (incase wild):</p>
+	<span id="yourhandtext">your hand:</span>
+	<span hidden id="myturn" class="redBorder">It's your turn!</span>
 	<div id="hand"></div>
+	<button onclick="playCards([])">draw one instead</button>
 </body>
 <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
 <script src="app.js"></script>

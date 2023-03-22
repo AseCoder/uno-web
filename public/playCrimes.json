@@ -1,0 +1,8 @@
+{
+	"1": [ "Wrong turn", "It's not your turn." ],
+	"2": [ "Made up card(s)", "The card(s) you played is not in your hand." ],
+	"3": [ "Not an array", "cardsPlayed is not an instance of Array." ],
+	"4": [ "Too many cards", "You played more cards than is allowed. Is Stacking activated?" ],
+	"5": [ "Not matching color or symbol", "The card(s) you played doesn't match the Discard by either color or symbol." ],
+	"6": [ "Illegal WD4", "You played a Wild Draw Four when your hand included cards whose color matched the Discard." ]
+}

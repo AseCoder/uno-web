@@ -1,0 +1,8 @@
+{
+	"-1": ["Error while joining game", "You must supply a name string while the game is not started."],
+	"-2": ["Error: name taken", "Choose a different name."],
+	"1": ["Success: new player", "You've joined the game"],
+	"2": ["Success: reconnected", "You've resumed communications with the server"],
+	"3": ["Success: renamed", "Your name has been changed."],
+	"4": ["Info: useless", "You've already joined."]
+}

@@ -1,10 +1,28 @@
-const parseCard = require('./parseCard');
 const game = require('./common');
+const parseCard = require('./parseCard');
 const parseCardEffects = require('./parseCardEffects');
+const combineCardsEffects = require('./combineCardsEffects');
+
 // rules source:
 // https://service.mattel.com/instruction_sheets/GDJ85-Eng.pdf
 // except pre 2018 deck
-module.exports = (cardsPlayed, discardPileTopCard, hand) => {
+/**
+ * @typedef PlayLegalityResult
+ * @type {object}
+ * @property {boolean} legal
+ * @property {string} [reason]
+ * @property {CardEffects} effects
+ * @property {number} effects.thisDraws How many cards this player should draw
+ * 
+ */
+/**
+ * Determines if a play was legal and returns a suggested resolution
+ * @param {string[]} cardsPlayed The cards played by the player
+ * @param {Card} discardPileTopCard The Discard
+ * @param {string[]} hand The player's hand (including cards they played)
+ * @returns {PlayLegalityResult}
+ */
+function checkPlayLegality(cardsPlayed, discardPileTopCard, hand) {
 	const result = {
 		legal: false,
 		reason: undefined,
@@ -15,7 +33,7 @@ module.exports = (cardsPlayed, discardPileTopCard, hand) => {
 	// if no dis card, play is legal, apply effects (for first card)
 	if (!discardPileTopCard?.name) {
 		result.legal = true;
-		result.effects = parseCardEffects(parseCard(cardsPlayed[0]));
+		result.effects = parseCardEffects(parseCard(cardsPlayed[0].name || cardsPlayed[0]));
 		return result;
 	}
 
@@ -29,9 +47,8 @@ module.exports = (cardsPlayed, discardPileTopCard, hand) => {
 		result.reason = 4;
 		return result;
 	}
-	// all played cards must be real cards
-	const deck = require('../cards.json');
-	if (!cardsPlayed.every(playedCard => deck.includes(playedCard))) {
+	// all played cards must be real cards and in their hand, if cards are played
+	if (cardsPlayed.length > 0 && !cardsPlayed.every(playedCard => hand.includes(playedCard))) {
 		result.reason = 2;
 		return result;
 	}
@@ -51,9 +68,9 @@ module.exports = (cardsPlayed, discardPileTopCard, hand) => {
 		} else if (cardsPlayed.length > 1) {
 			// recursive?
 		}
-	} else {
-		result.effects.thisDraws = 1;
 	}
 	result.legal = true;
+	result.effects = combineCardsEffects(cardsPlayed.map(x => parseCardEffects(parseCard(x))));
 	return result;
 }
+module.exports = checkPlayLegality;

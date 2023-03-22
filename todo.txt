@@ -1,0 +1,9 @@
+player disconnected when effects are being applied to them
+
+redo play-cards
+
+if all players timeout playing cards, end game.
+
+reverse when 2 players
+
+draw one
