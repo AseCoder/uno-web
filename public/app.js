@@ -43,9 +43,11 @@ class Popup {
 		const div = document.createElement('div')
 		div.classList.add('popup');
 		this.msg.forEach(x => {
-			const p = document.createElement('p');
-			p.textContent = x;
-			div.appendChild(p);
+			if (typeof x === 'string') {
+				const p = document.createElement('p');
+				p.textContent = x;
+				div.appendChild(p);
+			} else div.appendChild(x);
 		});
 		this.options.forEach((x, i) => {
 			const button = document.createElement('button');
@@ -179,6 +181,14 @@ socket.on('choose-color', () => {
 	(new Popup(['Choose a color to be played'], ['Red', 'Green', 'Blue', 'Yellow'], option => {
 		socket.emit('chosen-color', option.toLowerCase());
 	})).draw();
+});
+socket.on('play-draw-one', drawn => {
+	const img = document.createElement('img');
+	img.src = '/cards/' + drawn + '.svg';
+	img.alt = drawn;
+	new Popup(['You drew a', img, 'Would you like to play it?'], ['Yes', 'No'], option => {
+		socket.emit('play-draw-one-decision', option === 'Yes');
+	}).draw();
 });
 socket.on('end-game', winner => {
 	(new Popup([`The game has ended. ${winner} won. Reload the page to play again.`], ['Reload'], option => {

@@ -64,7 +64,6 @@ async function gameLoop(io) {
 			await applyCardEffects(result.playLegalityResult.effects, io);
 		} catch (bool) {
 			socket.removeAllListeners('play-cards');
-			console.error(bool);
 			const drawn = game.randomCard();
 			const cardsPlayed = [drawn];
 			player.addCards(cardsPlayed);
@@ -88,9 +87,6 @@ async function gameLoop(io) {
 				}
 			}
 		}
-		// idea: rej means they need to draw a card. res means they have successfully played a card / completed their turn
-		// rej bool is if they should be given a chance to play that card
-		// next turn
 		game.turnIndex.setNext();
 		io.of('/').emit('game-info', game.generateGameInfo());
 	}
