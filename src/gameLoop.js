@@ -3,17 +3,18 @@ const checkPlayLegality = require('./checkPlayLegality');
 const parseCard = require("./parseCard");
 const applyCardEffects = require('./applyCardEffects');
 const endGame = require("./endGame");
+const io = require("../server");
+
 /**
  * Loops over turns, keeps the game running
  * @param {httpServer} io 
  */
-async function gameLoop(io) {
+async function gameLoop() {
 	// while the game has started and not ended
 	while (game.state.data === 1) {
-		const player = game.players.currentTurn();
-		const socket = io.of('/').sockets.get(player.socketId);
+		const player = game.players.currentTurn;
 		// turn has just changed, tell them to play cards
-		socket.emit('your-turn');
+		player.socket.emit('your-turn');
 
 		// they play cards
 		// you get 3 tries or you draw a card and your turn is skipped, alternatively 2 minutes
@@ -24,8 +25,8 @@ async function gameLoop(io) {
 				setTimeout(rej, 2 * 60 * 1000);
 				for (let i = 0; i < 3; i++) {
 					const playSuccess = await new Promise(playResolve => {
-						socket.once('play-cards', (cardsPlayed, cbLegal) => {
-							console.log(`${socket.id} ${player.name} played cards ${cardsPlayed}`);
+						player.socket.once('play-cards', (cardsPlayed, cbLegal) => {
+							console.log(`${player.name} played cards ${cardsPlayed}`);
 							if (cardsPlayed.length === 0) {
 								cbLegal(true);
 								return playResolve({ status: 0 });
@@ -53,42 +54,42 @@ async function gameLoop(io) {
 				}
 				rej(false);
 			});
-			socket.removeAllListeners('play-cards');
+			player.socket.removeAllListeners('play-cards');
 			console.log(result);
 			player.removeCards(result.cardsPlayed);
-			socket.emit('your-hand', player.hand);
+			player.socket.emit('your-hand', player.hand);
 			game.discardPileTopCard.set(parseCard(result.cardsPlayed[result.cardsPlayed.length - 1]));
 			if (player.hand.length === 0) {
 				return endGame(io, player.name);
 			}
-			await applyCardEffects(result.playLegalityResult.effects, io);
+			await applyCardEffects(result.playLegalityResult.effects);
 		} catch (bool) {
-			socket.removeAllListeners('play-cards');
+			player.socket.removeAllListeners('play-cards');
 			const drawn = game.randomCard();
 			const cardsPlayed = [drawn];
 			player.addCards(cardsPlayed);
-			socket.emit('your-hand', player.hand);
+			player.socket.emit('your-hand', player.hand);
 			if (bool) {
 				const drawnCardPlayLegalityResult = checkPlayLegality(cardsPlayed, game.discardPileTopCard.data, player.hand);
 				if (drawnCardPlayLegalityResult.legal === true) {
 					const playsDrawnCard = await new Promise((res, rej) => {
-						socket.once('play-draw-one-decision', res);
-						socket.emit('play-draw-one', drawn);
+						player.socket.once('play-draw-one-decision', res);
+						player.socket.emit('play-draw-one', drawn);
 						setTimeout(() => {
 							res(true);
 						}, 30 * 1000);
 					});
 					if (playsDrawnCard) {
 						player.removeCards(cardsPlayed);
-						socket.emit('your-hand', player.hand);
+						player.socket.emit('your-hand', player.hand);
 						game.discardPileTopCard.set(parseCard(cardsPlayed[cardsPlayed.length - 1]));
-						await applyCardEffects(drawnCardPlayLegalityResult.effects, io);
+						await applyCardEffects(drawnCardPlayLegalityResult.effects);
 					}
 				}
 			}
 		}
 		game.turnIndex.setNext();
-		io.of('/').emit('game-info', game.generateGameInfo());
+		io.emit('game-info', game.generateGameInfo());
 	}
 }
 module.exports = gameLoop;

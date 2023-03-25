@@ -84,10 +84,10 @@ const game = {
 		 */
 		splice: function(a, b) { this.data.splice(a, b); },
 		/**
-		 * Returns the player whose turn it is, depends only on turnIndex
-		 * @returns {Player}
+		 * The player whose turn it is, depends only on turnIndex
+		 * @type {Player}
 		 */
-		currentTurn: function() {
+		get currentTurn() {
 			return this.data[game.turnIndex.data];
 		},
 	},

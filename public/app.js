@@ -89,14 +89,17 @@ function getPlayCrimes() {
 }
 
 function setName() {
-	const value = document.getElementById('name').value;
-	if (value.length === 0) return console.log('name cannot have length 0');
-	socket.emit('set-name', value, async status => {
+	const username = document.getElementById('name').value;
+	if (username.length === 0) return console.log('name cannot have length 0');
+	socket.emit('set-name', username, async status => {
 		console.log(`set-name ack'd with status ${status}`);
 		const msg = (await getSetnameCodes())[status.toString()];
 		new InfoMessage(msg).draw();
+		game.myTurn = game.turnIndex === game.players?.findIndex(x => x[0] === game.username);
 	});
 }
+
+document.getElementById('set-name').onclick = setName;
 
 function playCards(cards) {
 	if (!game.myTurn) return console.log('not my turn');
@@ -122,8 +125,6 @@ socket.on('disconnect', reason => {
 	socket.once('connect', setName);
 	(new InfoMessage(['Error: disconnected', 'Server connection lost. Reconnecting...'])).draw();
 });
-
-document.getElementById('set-name').onclick = setName;
 
 socket.on('your-hand', hand => {
 	console.log(hand);
@@ -165,7 +166,10 @@ socket.on('game-info', data => {
 		});
 		document.getElementById('players').replaceChildren(...plrs);
 	}
-	if (data.turnIndex !== undefined) game.turnIndex = data.turnIndex;
+	if (data.turnIndex !== undefined) {
+		game.turnIndex = data.turnIndex;
+		game.myTurn = data.turnIndex === game.players.findIndex(x => x[0] === game.name);
+	}
 	if (data.players || data.turnIndex) {
 		for (const child of document.getElementById('players').children) {
 			child.classList.remove('redBorder');

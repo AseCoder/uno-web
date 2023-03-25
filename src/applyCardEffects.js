@@ -1,4 +1,6 @@
+const io = require('../server');
 const game = require('./common');
+
 /**
  * Applies the effects of a card by sending messages to people
  * @param {CardEffects} effects
@@ -7,15 +9,15 @@ const game = require('./common');
  * @param {boolean} beginning If this card turned up at the beginning of play (effects only on current player)
  * @returns {void}
  */
-function applyCardEffects(effects, io, beginning) { return new Promise(async (res, rej) => {
-	const thisPlayer = game.players.currentTurn();
-	const thisSocket = io.of('/').sockets.get(thisPlayer.socketId);
+function applyCardEffects(effects, beginning) { return new Promise(async (res, rej) => {
+	const currentPlayer = game.players.currentTurn;
 	if (effects.thisDraws > 0) {
 		const drawnCards = [];
 		for (let i = 0; i < effects.thisDraws; i++) {
 			drawnCards.push(game.randomCard());
 		}
-		thisSocket.emit('your-hand', thisPlayer.addCards(drawnCards));
+		const hand = currentPlayer.addCards(drawnCards);
+		currentPlayer.socket.emit('your-hand', hand);
 	}
 	if (effects.changeDirection) {
 		if (game.players.data.length > 2) game.direction.reverse(); else game.direction.skipNext += 1;
@@ -25,26 +27,29 @@ function applyCardEffects(effects, io, beginning) { return new Promise(async (re
 		for (let i = 0; i < effects.nextDraws; i++) {
 			drawnCards.push(game.randomCard());
 		}
-		if (beginning) thisSocket.emit('your-hand', thisPlayer.addCards(drawnCards));
+		const hand = currentPlayer.addCards(drawnCards)
+		if (beginning) currentPlayer.socket.emit('your-hand', hand);
 		else {
 			const nextplayer = game.players.data[game.turnIndex.getNext()];
-			io.of('/').sockets.get(nextplayer.socketId).emit('your-hand', nextplayer.addCards(drawnCards));
+			const hand = nextplayer.addCards(drawnCards);
+			nextplayer.socket.emit('your-hand', hand);
 		}
 	}
 	if (effects.chooseColor) {
+		io.emit(game.generateGameInfo({ players: true, discardPileTopCard: true }));
 		const p1 = new Promise(res1 => {
-				thisSocket.once('chosen-color', color => {
-					console.log(`${thisSocket.id} chose color ${color}`);
-					game.discardPileTopCard.setColor(color);
-					res1();
-				});
-				thisSocket.emit('choose-color');
+			currentPlayer.socket.once('chosen-color', color => {
+				console.log(`${currentPlayer.name} chose color ${color}`);
+				game.discardPileTopCard.setColor(color);
+				res1();
+			});
+			currentPlayer.socket.emit('choose-color');
 		});
 		const p2 = new Promise((res2, rej2) => setTimeout(rej2, 60 * 1000));
 		try {
 			await Promise.race([p1, p2]);
 		} catch (error) {
-			thisSocket.removeAllListeners('chosen-color');
+			currentPlayer.socket.removeAllListeners('chosen-color');
 			game.discardPileTopCard.setColor(['red', 'green', 'blue', 'yellow'][Math.floor(Math.random() * 4)]);
 		}
 	}

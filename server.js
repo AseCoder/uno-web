@@ -10,12 +10,13 @@ const game = require('./src/common');
 app.use('/', express.static(__dirname + '/public'));
 
 io.on('connection', (socket) => {
-	console.log(`${new Date()} ${socket.id} connected`);
-	require('./src/registerAdminHandlers')(io, socket);
-	require('./src/registerPlayerHandlers')(io, socket);
+	console.log(`${socket.id} connected`);
+	require('./src/registerAdminHandlers')(socket);
+	require('./src/registerPlayerHandlers')(socket);
 });
 
 server.listen(process.env.PORT || 3000, () => {
 	console.log(`listening on *:${process.env.PORT || 3000}`);
 });
 
+module.exports = io;

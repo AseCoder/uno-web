@@ -1,14 +1,13 @@
+const io = require('../server');
 const game = require('./common');
 const Player = require('./playerClass');
-const checkPlayLegality = require('./checkPlayLegality');
-const applyCardEffects = require('./applyCardEffects');
-const parseCard = require('./parseCard');
+
 /** Creates socket.io event listeners for player requests.
  * @param {httpServer} io The socket.io server
  * @param {Socket} socket The socket that these event listeners will be assigned to
  * @returns {void}
 */
-function registerPlayerHandlers(io, socket) {
+function registerPlayerHandlers(socket) {
 	socket.on('disconnect', reason => {
 		console.log(`${new Date()} ${socket.id} disconnected. reason: ${reason}`);
 		const i = game.players.data.findIndex(x => x.idEquals(socket.id));

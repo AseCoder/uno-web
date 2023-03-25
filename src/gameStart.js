@@ -3,12 +3,14 @@ const parseCard = require('./parseCard');
 const checkPlayLegality = require('./checkPlayLegality');
 const applyCardEffects = require('./applyCardEffects');
 const gameLoop = require('./gameLoop');
+const io = require('../server');
+
 /**
  * Starts the game
  * @param {httpServer} io The socket.io server
  * @returns {void}
  */
-async function gameStart(io) {
+async function gameStart() {
 	if (game.state.data !== 0) return console.log('wrong game state for game start');
 	if (game.players.data.length < 1) return console.log('not enough players');
 	game.state.set(1);
@@ -22,15 +24,14 @@ async function gameStart(io) {
 			hand.push(game.randomCard());
 		}
 		player.hand = hand;
-		const socket = io.of('/').sockets.get(player.socketId);
-		socket.emit('your-hand', hand);
+		player.socket.emit('your-hand', hand);
 	});
 	game.discardPileTopCard.set(parseCard(game.randomCard(true)));
 	const result = checkPlayLegality([game.discardPileTopCard.data]);
-	io.of('/').emit('game-info', game.generateGameInfo());
+	io.emit('game-info', game.generateGameInfo());
 	await new Promise((res) => setTimeout(res, 2000));
-	await applyCardEffects(result.effects, io);
-	io.of('/').emit('game-info', game.generateGameInfo({ players: true }));
-	gameLoop(io);
+	await applyCardEffects(result.effects, true);
+	io.emit('game-info', game.generateGameInfo({ players: true }));
+	gameLoop();
 }
 module.exports = gameStart;

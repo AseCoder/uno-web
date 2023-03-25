@@ -1,3 +1,5 @@
+const io = require("../server");
+
 /** Creates a player
  * @param {string} name The username that this player has chosen
  * @param {string} socketId The socket id of this player
@@ -70,6 +72,14 @@ class Player {
 			this.hand.splice(i, 1);
 		});
 		return this.hand;
+	}
+	/**
+	 * The socket that corresponds to this.socketId
+	 * @type {socket} socket
+	 */
+	get socket() {
+		if (!this.socketId) return;
+		return io.sockets.sockets.get(this.socketId);
 	}
 }
 module.exports = Player;
