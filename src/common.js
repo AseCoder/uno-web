@@ -9,7 +9,9 @@ const game = {
 	 */
 	houseRules: {
 		stacking: false,
-		allowIllegalWD4: false
+		allowIllegalWD4: false,
+		drawUntilPlay: false,
+		jumpIn: false,
 	},
 	/**
 	 * The UNO deck (pre 2018), long card names

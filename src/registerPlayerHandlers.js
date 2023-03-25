@@ -1,3 +1,4 @@
+const io = require('../server');
 const game = require('./common');
 const Player = require('./playerClass');
 
@@ -41,6 +42,7 @@ function registerPlayerHandlers(socket) {
 		if (!nameExists && !idExists) {
 			if (game.state.data !== 0) return cb(-1); // cannot join during game
 			game.players.unshift(new Player(name, socket.id));
+			io.emit('game-info', game.generateGameInfo({ players: true }));
 			return cb(1);
 		}
 
@@ -60,6 +62,7 @@ function registerPlayerHandlers(socket) {
 		// 3.
 		if (!nameExists && idExists) {
 			game.players.data.find(x => x.idEquals(socket.id)).rename(name);
+			io.emit('game-info', game.generateGameInfo({ players: true }));
 			return cb(3);
 		}
 

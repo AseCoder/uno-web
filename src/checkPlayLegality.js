@@ -5,6 +5,7 @@ const combineCardsEffects = require('./combineCardsEffects');
 
 // rules source:
 // https://service.mattel.com/instruction_sheets/GDJ85-Eng.pdf
+// https://en.wikipedia.org/wiki/Uno_(card_game)#Official_rules
 // except pre 2018 deck
 /**
  * @typedef PlayLegalityResult
