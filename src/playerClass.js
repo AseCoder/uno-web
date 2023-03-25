@@ -6,12 +6,21 @@ const io = require("../server");
  * @property {string} name The username that this player has chosen
  * @property {string} socketId The socket id of this player
  * @property {string[]} hand An array of cards in this player's hand
+ * @property {object} socket The socket that corresponds to this.socketId
 */
 class Player {
 	constructor(name, socketId) {
 		this.name = name;
 		this.socketId = socketId;
 		this.hand = [];
+		this.eventListeners = {
+			on: [],
+			once: []
+		};
+		this.status = {
+			myTurn: false,
+			choosingColor: false,
+		};
 	}
 	/**
 	 * Disconnects the socket from the player by removing the socket id from the player
@@ -26,6 +35,18 @@ class Player {
 	reconnect(socketId) {
 		if (this.socketId) throw new Error();
 		this.socketId = socketId;
+		this.eventListeners.on.forEach(arr => {
+			const event = arr[0];
+			const args = arr[1];
+			this.socket.on(event, ...args);
+		});
+		this.eventListeners.once.forEach(arr => {
+			const event = arr[0];
+			const args = arr[1];
+			this.socket.once(event, ...args);
+		});
+		if (this.status.myTurn) this.socket.emit('your-turn');
+		if (this.status.choosingColor) this.socket.emit('choose-color');
 	}
 	/**
 	 * Renames a player by assigning them a new name
@@ -74,9 +95,30 @@ class Player {
 		return this.hand;
 	}
 	/**
-	 * The socket that corresponds to this.socketId
-	 * @type {socket} socket
+	 * Wrapper for socket.on()
+	 * @param {string} event The event name to listen for
+	 * @param  {...any} args Other arguments, eg. data. last one can be cb
 	 */
+	on(event, ...args) {
+		this.eventListeners.on.push([event, args]);
+		this.socket.on(event, ...args);
+	}
+	/**
+	 * Wrapper for socket.once()
+	 * @param {string} event The event name to listen for
+	 * @param  {...any} args Other arguments, eg. data. last one can be cb
+	 */
+	once(event, ...args) {
+		this.eventListeners.once.push([event, args]);
+		this.socket.once(event, ...args);
+	}
+	/** Removes event listeners from this player's socket
+	 * @param {string} event The event name to remove listeners from
+	 */
+	removeAllListeners(event) {
+		this.eventListeners.on = this.eventListeners.on.filter(x => x[0] !== event);
+		this.eventListeners.once = this.eventListeners.once.filter(x => x[0] !== event);
+	}
 	get socket() {
 		if (!this.socketId) return;
 		return io.sockets.sockets.get(this.socketId);

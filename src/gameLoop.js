@@ -7,7 +7,6 @@ const io = require("../server");
 
 /**
  * Loops over turns, keeps the game running
- * @param {httpServer} io 
  */
 async function gameLoop() {
 	// while the game has started and not ended
@@ -15,6 +14,8 @@ async function gameLoop() {
 		const player = game.players.currentTurn;
 		// turn has just changed, tell them to play cards
 		player.socket.emit('your-turn');
+		player.status.myTurn = true;
+		console.log(`it's "${player.name}"'s turn`);
 
 		// they play cards
 		// you get 3 tries or you draw a card and your turn is skipped, alternatively 2 minutes
@@ -26,14 +27,13 @@ async function gameLoop() {
 				for (let i = 0; i < 3; i++) {
 					const playSuccess = await new Promise(playResolve => {
 						player.socket.once('play-cards', (cardsPlayed, cbLegal) => {
-							console.log(`${player.name} played cards ${cardsPlayed}`);
+							console.log(`"${player.name}" played cards ${cardsPlayed}`);
 							if (cardsPlayed.length === 0) {
 								cbLegal(true);
 								return playResolve({ status: 0 });
 							}
 							const playLegalityResult = checkPlayLegality(cardsPlayed, game.discardPileTopCard.data, player.hand);
 							cbLegal(playLegalityResult.legal, playLegalityResult.reason);
-							console.log(playLegalityResult);
 							if (playLegalityResult.legal) {
 								playResolve({ status: 1, cardsPlayed, playLegalityResult });
 							} else {
@@ -55,12 +55,12 @@ async function gameLoop() {
 				rej(false);
 			});
 			player.socket.removeAllListeners('play-cards');
-			console.log(result);
+			console.log('play result:', result);
 			player.removeCards(result.cardsPlayed);
 			player.socket.emit('your-hand', player.hand);
 			game.discardPileTopCard.set(parseCard(result.cardsPlayed[result.cardsPlayed.length - 1]));
 			if (player.hand.length === 0) {
-				return endGame(io, player.name);
+				return endGame(player.name);
 			}
 			await applyCardEffects(result.playLegalityResult.effects);
 		} catch (bool) {
@@ -88,6 +88,7 @@ async function gameLoop() {
 				}
 			}
 		}
+		player.status.myTurn = false;
 		game.turnIndex.setNext();
 		io.emit('game-info', game.generateGameInfo());
 	}

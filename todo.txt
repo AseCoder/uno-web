@@ -1,9 +1,5 @@
-player disconnected when effects are being applied to them [!]
-
 if all players timeout playing cards, end game.
 
-"your turn" at incorrect times (maybe after failed turn?)
+gameinfo players when game hasnt started
 
-players when game hasnt started
-
-event listeners have to be readded after reconnection [!]
+get rid of admin, players report ready to play

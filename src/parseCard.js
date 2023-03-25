@@ -6,6 +6,7 @@ const cards = require('../cards.json');
  * @property {string} color The color (red, gree, blue, yellow) (in case of wild*, empty initially but changes when player chooses color)
  * @property {string} symbol The number or action
  */
+
 /**
  * @param {string} cardName The long name of the card that should be parsed
  * @returns {Card} The parsed card

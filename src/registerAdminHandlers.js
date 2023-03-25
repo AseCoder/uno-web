@@ -2,7 +2,6 @@ const io = require('../server');
 const game = require('./common');
 const gameStart = require('./gameStart');
 /** Creates socket.io event listeners for admin requests.
- * @param {httpServer} io The socket.io server
  * @param {Socket} socket The socket that these event listeners will be assigned to
  * @returns {void}
 */

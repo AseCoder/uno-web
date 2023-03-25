@@ -6,6 +6,7 @@
  * @property {boolean} chooseColor If the current player should choose a new play color
  * @property {boolean} skipNext If the next player should be skipped
  */
+
 /**
  * 
  * @param {Card} card The card whose effects should be parsed

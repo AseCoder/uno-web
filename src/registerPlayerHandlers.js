@@ -1,9 +1,7 @@
-const io = require('../server');
 const game = require('./common');
 const Player = require('./playerClass');
 
 /** Creates socket.io event listeners for player requests.
- * @param {httpServer} io The socket.io server
  * @param {Socket} socket The socket that these event listeners will be assigned to
  * @returns {void}
 */

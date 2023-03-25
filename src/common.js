@@ -170,7 +170,7 @@ const game = {
 		setNext() {
 			this.set(this.getNext());
 			game.direction.skipNext = 0;
-			console.trace('turnindex set to', this.data);
+			console.log('turnindex', this.data);
 		}
 	},
 	/**

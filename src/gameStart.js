@@ -7,7 +7,6 @@ const io = require('../server');
 
 /**
  * Starts the game
- * @param {httpServer} io The socket.io server
  * @returns {void}
  */
 async function gameStart() {

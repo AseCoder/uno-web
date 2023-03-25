@@ -4,7 +4,8 @@ let game = {
 		this._myTurn = bool;
 		document.getElementById('myturn').hidden = !bool;
 	},
-	get myTurn() { return this._myTurn }
+	get myTurn() { return this._myTurn },
+	removablePopups: [],
 };
 
 class InfoMessage {
@@ -36,6 +37,8 @@ class Popup {
 		this.msg = msg;
 		this.options = options;
 		this.callback = callback;
+		this.closed = false;
+		this.element;
 	}
 	draw() {
 		const bg = document.createElement('div');
@@ -57,11 +60,20 @@ class Popup {
 					this.callback(x);
 				} catch (err) {console.log(err)}
 				bg.remove();
+				this.closed = true;
+				game.removablePopups = game.removablePopups.filter(x => !x.closed);
 			};
 			div.appendChild(button);
 		});
 		bg.appendChild(div);
 		document.body.appendChild(bg);
+		this.element = bg;
+		return this;
+	}
+	remove() {
+		this.callback();
+		this.element.remove();
+		this.closed = true;
 	}
 }
 
@@ -95,7 +107,7 @@ function setName() {
 		console.log(`set-name ack'd with status ${status}`);
 		const msg = (await getSetnameCodes())[status.toString()];
 		new InfoMessage(msg).draw();
-		game.myTurn = game.turnIndex === game.players?.findIndex(x => x[0] === game.username);
+		game.myTurn = game.turnIndex && game.turnIndex === game.players?.findIndex(x => x[0] === game.username);
 	});
 }
 
@@ -124,6 +136,7 @@ socket.on('disconnect', reason => {
 	console.log(`disconnected. reason: ${reason}`);
 	socket.once('connect', setName);
 	(new InfoMessage(['Error: disconnected', 'Server connection lost. Reconnecting...'])).draw();
+	game.removablePopups.forEach(x => x.remove());
 });
 
 socket.on('your-hand', hand => {
@@ -182,9 +195,14 @@ socket.on('your-turn', () => {
 	game.myTurn = true;
 });
 socket.on('choose-color', () => {
-	(new Popup(['Choose a color to be played'], ['Red', 'Green', 'Blue', 'Yellow'], option => {
+	console.log('you have to choose a color');
+	const cb = option => {
+		if (!option) return;
 		socket.emit('chosen-color', option.toLowerCase());
-	})).draw();
+	};
+	const colorPopup = new Popup(['Choose a color to be played'], ['Red', 'Green', 'Blue', 'Yellow'], cb);
+	console.log('popup', colorPopup);
+	game.removablePopups.push(colorPopup.draw());
 });
 socket.on('play-draw-one', drawn => {
 	const img = document.createElement('img');
@@ -195,7 +213,8 @@ socket.on('play-draw-one', drawn => {
 	}).draw();
 });
 socket.on('end-game', winner => {
-	(new Popup([`The game has ended. ${winner} won. Reload the page to play again.`], ['Reload'], option => {
+	const endPopup = new Popup([`The game has ended. ${winner} won. Reload the page to play again.`], ['Reload'], () => {
 		location.reload();
-	})).draw();
+	});
+	endPopup.draw();
 });
