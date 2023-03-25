@@ -107,7 +107,8 @@ function setName() {
 		console.log(`set-name ack'd with status ${status}`);
 		const msg = (await getSetnameCodes())[status.toString()];
 		new InfoMessage(msg).draw();
-		game.myTurn = game.turnIndex && game.turnIndex === game.players?.findIndex(x => x[0] === game.username);
+		game.username = username;
+		if (game.turnIndex !== undefined) game.myTurn = game.turnIndex === game.players?.findIndex(x => x[0] === game.username);
 	});
 }
 
@@ -181,7 +182,7 @@ socket.on('game-info', data => {
 	}
 	if (data.turnIndex !== undefined) {
 		game.turnIndex = data.turnIndex;
-		game.myTurn = data.turnIndex === game.players.findIndex(x => x[0] === game.name);
+		game.myTurn = game.turnIndex === game.players.findIndex(x => x[0] === game.username);
 	}
 	if (data.players || data.turnIndex) {
 		for (const child of document.getElementById('players').children) {
