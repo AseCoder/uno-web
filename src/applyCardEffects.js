@@ -16,7 +16,7 @@ function applyCardEffects(effects, beginning) { return new Promise(async (res, r
 			drawnCards.push(game.randomCard());
 		}
 		const hand = currentPlayer.addCards(drawnCards);
-		currentPlayer.socket.emit('your-hand', hand);
+		currentPlayer.socket?.emit('your-hand', hand);
 	}
 	if (effects.changeDirection) {
 		if (game.players.data.length > 2) game.direction.reverse(); else game.direction.skipNext += 1;
@@ -28,32 +28,33 @@ function applyCardEffects(effects, beginning) { return new Promise(async (res, r
 		}
 		if (beginning) {
 			const hand = currentPlayer.addCards(drawnCards);
-			currentPlayer.socket.emit('your-hand', hand);
+			currentPlayer.socket?.emit('your-hand', hand);
 		} else {
 			const nextplayer = game.players.data[game.turnIndex.getNext()];
 			const hand = nextplayer.addCards(drawnCards);
-			nextplayer.socket.emit('your-hand', hand);
+			nextplayer.socket?.emit('your-hand', hand);
 		}
 	}
 	if (effects.chooseColor) {
-		io.emit(game.generateGameInfo({ players: true, discardPileTopCard: true }));
+		let removeColorEmitter = () => {};
+		io.emit('game-info', game.generateGameInfo({ players: true, discardPileTopCard: true }));
 		const p1 = new Promise(res1 => {
 			currentPlayer.once('chosen-color', color => {
 				console.log(`"${currentPlayer.name}" chose to play color ${color}`);
 				game.discardPileTopCard.setColor(color);
 				res1();
 			});
-			currentPlayer.status.choosingColor = true;
-			currentPlayer.socket.emit('choose-color');
+			removeColorEmitter = currentPlayer.persistentEmit('choose-color');
 		});
-		const p2 = new Promise((res2, rej2) => setTimeout(rej2, 60 * 1000));
+		const p2 = new Promise((res2, rej2) => setTimeout(rej2, 30 * 1000));
 		try {
 			await Promise.race([p1, p2]);
 		} catch (error) {
-			currentPlayer.removeAllListeners('chosen-color');
 			game.discardPileTopCard.setColor(['red', 'green', 'blue', 'yellow'][Math.floor(Math.random() * 4)]);
 		}
-		currentPlayer.status.choosingColor = false;
+		currentPlayer.removeAllListeners('chosen-color');
+		removeColorEmitter();
+		io.emit('game-info', game.generateGameInfo({ discardPileTopCard: true }));
 	}
 	if (effects.skipNext > 0) {
 		game.direction.skipNext += effects.skipNext;

@@ -23,7 +23,7 @@ async function gameStart() {
 			hand.push(game.randomCard());
 		}
 		player.hand = hand;
-		player.socket.emit('your-hand', hand);
+		player.socket?.emit('your-hand', hand);
 	});
 	game.discardPileTopCard.set(parseCard(game.randomCard(true)));
 	const result = checkPlayLegality([game.discardPileTopCard.data]);

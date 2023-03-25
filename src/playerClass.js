@@ -17,10 +17,7 @@ class Player {
 			on: [],
 			once: []
 		};
-		this.status = {
-			myTurn: false,
-			choosingColor: false,
-		};
+		this.persistentEmits = [];
 	}
 	/**
 	 * Disconnects the socket from the player by removing the socket id from the player
@@ -38,15 +35,18 @@ class Player {
 		this.eventListeners.on.forEach(arr => {
 			const event = arr[0];
 			const args = arr[1];
-			this.socket.on(event, ...args);
+			this.socket?.on(event, ...args);
 		});
 		this.eventListeners.once.forEach(arr => {
 			const event = arr[0];
 			const args = arr[1];
-			this.socket.once(event, ...args);
+			this.socket?.once(event, ...args);
 		});
-		if (this.status.myTurn) this.socket.emit('your-turn');
-		if (this.status.choosingColor) this.socket.emit('choose-color');
+		this.persistentEmits.forEach(arr => {
+			const event = arr[0];
+			const args = arr[1];
+			this.socket?.emit(event, ...args);
+		});
 	}
 	/**
 	 * Renames a player by assigning them a new name
@@ -101,7 +101,7 @@ class Player {
 	 */
 	on(event, ...args) {
 		this.eventListeners.on.push([event, args]);
-		this.socket.on(event, ...args);
+		this.socket?.on(event, ...args);
 	}
 	/**
 	 * Wrapper for socket.once()
@@ -110,14 +110,26 @@ class Player {
 	 */
 	once(event, ...args) {
 		this.eventListeners.once.push([event, args]);
-		this.socket.once(event, ...args);
+		this.socket?.once(event, ...args);
 	}
 	/** Removes event listeners from this player's socket
 	 * @param {string} event The event name to remove listeners from
 	 */
 	removeAllListeners(event) {
+		this.socket?.removeAllListeners(event);
 		this.eventListeners.on = this.eventListeners.on.filter(x => x[0] !== event);
 		this.eventListeners.once = this.eventListeners.once.filter(x => x[0] !== event);
+	}
+	/**
+	 * Emits this event and keeps emitting it upon reconnects
+	 * @param {string} event The event name to listen for
+	 * @param {...any} args Other arguments, eg. data. last one can be cb
+	 * @returns {function} Stops emitting this event
+	 */
+	persistentEmit(event, ...args) {
+		this.persistentEmits.push([event, args]);
+		this.socket?.emit(event, ...args);
+		return () => this.persistentEmits.splice(this.persistentEmits.findIndex(x => x[0] === event), 1);
 	}
 	get socket() {
 		if (!this.socketId) return;
