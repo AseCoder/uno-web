@@ -1,5 +1,3 @@
-if all players timeout playing cards, end game.
-
 gameinfo players when game hasnt started
 
 get rid of admin, players report ready to play

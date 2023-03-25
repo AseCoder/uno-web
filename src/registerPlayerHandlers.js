@@ -1,5 +1,6 @@
 const io = require('../server');
 const game = require('./common');
+const endGame = require('./endGame');
 const Player = require('./playerClass');
 
 /** Creates socket.io event listeners for player requests.
@@ -17,6 +18,7 @@ function registerPlayerHandlers(socket) {
 		} else {
 			game.players.splice(i, 1);
 		}
+		if (game.players.data.every(player => !player.socketId)) endGame();
 	});
 	socket.on('set-name', (name, cb) => {
 		console.log(`${socket.id} wants to set name "${name}"`);
