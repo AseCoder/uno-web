@@ -4,7 +4,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
+const io = new Server(server, { pingInterval: 3000, pingTimeout: 3000 });
 const game = require('./src/common');
 
 app.use('/', express.static(__dirname + '/public'));

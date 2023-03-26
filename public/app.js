@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io({ timeout: 3000 });
 let game = {
 	set myTurn(bool) {
 		this._myTurn = bool;
