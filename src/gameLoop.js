@@ -23,7 +23,7 @@ async function gameLoop() {
 		try {
 			const result = await new Promise(async (res, rej) => {
 				setTimeout(rej, 45 * 1000);
-				for (let i = 0; i < 3; i++) {
+				while (true) {
 					const playSuccess = await new Promise(playResolve => {
 						player.once('play-cards', (cardsPlayed, cbLegal) => {
 							console.log(`"${player.name}" played cards ${cardsPlayed}`);
