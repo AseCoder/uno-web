@@ -1,6 +1,7 @@
 {
 	"-1": ["Error while joining game", "You must supply a name string while the game is not started."],
 	"-2": ["Error: name taken", "Choose a different name."],
+	"-3": ["Error: too long", "The maximum length for a name is 35 characters."],
 	"1": ["Success: new player", "You've joined the game"],
 	"2": ["Success: reconnected", "You've resumed communications with the server"],
 	"3": ["Success: renamed", "Your name has been changed."],

@@ -27,10 +27,10 @@ async function gameStart() {
 	});
 	game.discardPileTopCard.set(parseCard(game.randomCard(true)));
 	const result = checkPlayLegality([game.discardPileTopCard.data]);
-	io.emit('game-info', game.generateGameInfo());
+	io.emit('game-info', game.generateGameInfo({ players: true, discardPileTopCard: true }));
 	await new Promise((res) => setTimeout(res, 2000));
 	await applyCardEffects(result.effects, true);
-	io.emit('game-info', game.generateGameInfo({ players: true }));
+	io.emit('game-info', game.generateGameInfo({ players: true, turnIndex: true }));
 	gameLoop();
 }
 module.exports = gameStart;

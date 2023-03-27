@@ -24,6 +24,7 @@ function registerPlayerHandlers(socket) {
 		console.log(`${socket.id} wants to set name "${name}"`);
 
 		if (typeof name !== 'string' || name.length === 0) return cb(-1); // must give a name
+		if (name.length > 35) return cb(-3); // 35 char max
 
 		// socket id wants to register itself with a name
 		// 4 possibilities:

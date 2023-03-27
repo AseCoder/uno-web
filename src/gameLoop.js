@@ -4,6 +4,7 @@ const parseCard = require("./parseCard");
 const applyCardEffects = require('./applyCardEffects');
 const endGame = require("./endGame");
 const io = require("../server");
+const kickPlayer = require("./kickPlayer");
 
 /**
  * Loops over turns, keeps the game running
@@ -15,14 +16,9 @@ async function gameLoop() {
 		// turn has just changed, tell them to play cards
 		const removeTurnEmitter = player.persistentEmit('your-turn');
 		console.log(`it's "${player.name}"'s turn`);
-
-		// they play cards
-		// you get 3 tries or you draw a card and your turn is skipped, alternatively 2 minutes
-		// idea: 2 promises, first is play-cards and second is timeout. see which one resolves first
-		// play cards loops until legal, otherwise rejects
 		try {
 			const result = await new Promise(async (res, rej) => {
-				setTimeout(rej, 45 * 1000);
+				setTimeout(rej, (player.socketId ? 45 : 18) * 1000); // is player disconnected?
 				while (true) {
 					const playSuccess = await new Promise(playResolve => {
 						player.once('play-cards', (cardsPlayed, cbLegal) => {
@@ -40,9 +36,9 @@ async function gameLoop() {
 							}
 						});
 					});
-					// if -1 continue
-					// if 0, rej
-					// if 1, res
+					// if -1 (illegal play), continue loop
+					// if 0 (played empty), rej
+					// if 1 (played cards), res
 					if (playSuccess.status === 1) {
 						res(playSuccess);
 						break;
@@ -51,12 +47,16 @@ async function gameLoop() {
 						break;
 					}
 				}
+				// rej means they draw a card
+				// res means they play cards
+				// param of rej is if they should be allowed to play the drawn card
 				rej(false);
 			});
 			player.removeAllListeners('play-cards');
 			console.log('play result:', result);
 			player.removeCards(result.cardsPlayed);
 			player.socket?.emit('your-hand', player.hand);
+			player.skippedTurns = 0;
 			game.discardPileTopCard.set(parseCard(result.cardsPlayed[result.cardsPlayed.length - 1]));
 			if (player.hand.length === 0) {
 				return endGame(player.name);
@@ -69,6 +69,7 @@ async function gameLoop() {
 			player.addCards(cardsPlayed);
 			player.socket?.emit('your-hand', player.hand);
 			if (bool) {
+				player.skippedTurns = 0;
 				const drawnCardPlayLegalityResult = checkPlayLegality(cardsPlayed, game.discardPileTopCard.data, player.hand);
 				if (drawnCardPlayLegalityResult.legal === true) {
 					let removeDrawEmitter = () => {};
@@ -88,10 +89,12 @@ async function gameLoop() {
 						await applyCardEffects(drawnCardPlayLegalityResult.effects);
 					}
 				}
+			} else {
+				player.skippedTurns++;
 			}
 		}
 		removeTurnEmitter();
-		game.turnIndex.setNext();
+		if (player.skippedTurns > 1) kickPlayer(game.turnIndex.data); else game.turnIndex.setNext();
 		io.emit('game-info', game.generateGameInfo());
 	}
 }

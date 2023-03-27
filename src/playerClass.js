@@ -18,6 +18,7 @@ class Player {
 			once: []
 		};
 		this.persistentEmits = [];
+		this.skippedTurns = 0;
 	}
 	/**
 	 * Disconnects the socket from the player by removing the socket id from the player
@@ -113,10 +114,11 @@ class Player {
 		this.socket?.once(event, ...args);
 	}
 	/** Removes event listeners from this player's socket
-	 * @param {string} event The event name to remove listeners from
+	 * @param {string} [event] The event name to remove listeners from
 	 */
 	removeAllListeners(event) {
 		this.socket?.removeAllListeners(event);
+		if (!event) return;
 		this.eventListeners.on = this.eventListeners.on.filter(x => x[0] !== event);
 		this.eventListeners.once = this.eventListeners.once.filter(x => x[0] !== event);
 	}

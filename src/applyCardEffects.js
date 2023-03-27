@@ -15,8 +15,7 @@ function applyCardEffects(effects, beginning) { return new Promise(async (res, r
 		for (let i = 0; i < effects.thisDraws; i++) {
 			drawnCards.push(game.randomCard());
 		}
-		const hand = currentPlayer.addCards(drawnCards);
-		currentPlayer.socket?.emit('your-hand', hand);
+		currentPlayer.addCards(drawnCards);
 	}
 	if (effects.changeDirection) {
 		if (game.players.data.length > 2) game.direction.reverse(); else game.direction.skipNext += 1;
@@ -27,17 +26,17 @@ function applyCardEffects(effects, beginning) { return new Promise(async (res, r
 			drawnCards.push(game.randomCard());
 		}
 		if (beginning) {
-			const hand = currentPlayer.addCards(drawnCards);
-			currentPlayer.socket?.emit('your-hand', hand);
+			currentPlayer.addCards(drawnCards);
 		} else {
 			const nextplayer = game.players.data[game.turnIndex.getNext()];
 			const hand = nextplayer.addCards(drawnCards);
 			nextplayer.socket?.emit('your-hand', hand);
 		}
 	}
+	if (effects.thisDraws > 0 || (effects.nextDraws > 0 && beginning)) currentPlayer.socket?.emit('your-hand', currentPlayer.hand);
 	if (effects.chooseColor) {
 		let removeColorEmitter = () => {};
-		io.emit('game-info', game.generateGameInfo({ players: true, discardPileTopCard: true }));
+		if (!beginning) io.emit('game-info', game.generateGameInfo({ players: true, discardPileTopCard: true }));
 		const p1 = new Promise(res1 => {
 			currentPlayer.once('chosen-color', color => {
 				console.log(`"${currentPlayer.name}" chose to play color ${color}`);

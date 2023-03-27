@@ -103,6 +103,7 @@ function getPlayCrimes() {
 function setName() {
 	const username = document.getElementById('name').value;
 	if (username.length === 0) return console.log('name cannot have length 0');
+	// if (username.length > 35) return console.log('name cannot have length >35');
 	socket.emit('set-name', username, async status => {
 		console.log(`set-name ack'd with status ${status}`);
 		const msg = (await getSetnameCodes())[status.toString()];
