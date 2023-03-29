@@ -53,7 +53,6 @@ function applyCardEffects(effects, beginning) { return new Promise(async (res, r
 		}
 		currentPlayer.removeAllListeners('chosen-color');
 		removeColorEmitter();
-		io.emit('game-info', game.generateGameInfo({ discardPileTopCard: true }));
 	}
 	if (effects.skipNext > 0) {
 		game.direction.skipNext += effects.skipNext;

@@ -22,7 +22,7 @@ async function gameLoop() {
 				while (true) {
 					const playSuccess = await new Promise(playResolve => {
 						player.once('play-cards', (cardsPlayed, cbLegal) => {
-							console.log(`"${player.name}" played cards ${cardsPlayed}`);
+							console.log(`2/2 "${player.name}" played cards ${cardsPlayed}`);
 							if (cardsPlayed.length === 0) {
 								cbLegal(true);
 								return playResolve({ status: 0 });

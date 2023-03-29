@@ -1,5 +1,6 @@
 const io = require('../server');
 const game = require('./common');
+const endGame = require('./endGame');
 const gameStart = require('./gameStart');
 /** Creates socket.io event listeners for admin requests.
  * @param {Socket} socket The socket that these event listeners will be assigned to
@@ -13,9 +14,7 @@ function registerAdminHandlers(socket) {
 	socket.on('end-game', data => {
 		if (data.pin !== process.env.ADMINPIN) return;
 		if (game.state.data !== 1) return console.log('wrong game state for game end');
-		game.players.reset();
-		game.state.set(0);
-		io.emit('end-game');
+		endGame();
 	});
 	socket.on('fetch-players', (data, cb) => {
 		if (data.pin !== process.env.ADMINPIN) return;

@@ -17,8 +17,9 @@ function registerPlayerHandlers(socket) {
 			game.players.data[i].disconnect();
 		} else {
 			game.players.splice(i, 1);
+			io.emit('game-info', game.generateGameInfo({ players: true }));
 		}
-		if (game.players.data.every(player => !player.socketId)) endGame();
+		if (game.state.data === 1 && game.players.data.every(player => !player.socketId)) endGame();
 	});
 	socket.on('set-name', (name, cb) => {
 		console.log(`${socket.id} wants to set name "${name}"`);
@@ -65,7 +66,7 @@ function registerPlayerHandlers(socket) {
 		// 3.
 		if (!nameExists && idExists) {
 			game.players.data.find(x => x.idEquals(socket.id)).rename(name);
-			io.emit('game-info', game.generateGameInfo({ players: true }));
+			if (game.state.data === 0) io.emit('game-info', game.generateGameInfo({ players: true }));
 			return cb(3);
 		}
 
@@ -73,6 +74,9 @@ function registerPlayerHandlers(socket) {
 		if (nameExists && idExists) {
 			return cb(4);
 		}
+	});
+	socket.on('play-cards', cardsPlayed => {
+		console.log(' 1/2 received play-cards', cardsPlayed);
 	});
 	socket.on('give-game-info', () => {
 		socket.emit('game-info', game.generateGameInfo());

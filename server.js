@@ -15,9 +15,8 @@ const io = new Server(server, {
 	},
 	allowEIO3: true
 });
-const game = require('./src/common');
 
-app.use('/', express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/public'), express.static(__dirname + '/public-new'));
 
 io.on('connection', (socket) => {
 	console.log(`${socket.id} connected`);
