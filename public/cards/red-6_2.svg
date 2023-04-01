@@ -25,7 +25,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.0809568"
-     inkscape:cx="33.766382"
+     inkscape:cx="32.841275"
      inkscape:cy="211.84935"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
@@ -42,7 +42,7 @@
      transform="translate(-237.77826,-98.275597)">
     <path
        id="rect8270"
-       style="fill:#ff1e00;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
+       style="fill:#eb2c13;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke;fill-opacity:1"
        d="m 242.77826,98.275597 h 54 c 2.77,0 5,2.230003 5,5.000003 v 91.56771 c 0,2.77 -2.23,5 -5,5 h -54 c -2.77,0 -5,-2.23 -5,-5 V 103.2756 c 0,-2.77 2.23,-5.000003 5,-5.000003 z" />
     <g
        aria-label="6"

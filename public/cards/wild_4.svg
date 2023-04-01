@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.0809568"
-     inkscape:cx="18.96468"
-     inkscape:cy="197.04765"
+     inkscape:cx="69.845529"
+     inkscape:cy="161.89361"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -44,74 +44,53 @@
        id="rect2559"
        style="stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
        d="m 224.36963,154.95566 h 54 c 2.77,0 5,2.23 5,5 v 91.56771 c 0,2.77 -2.23,5 -5,5 h -54 c -2.77,0 -5,-2.23 -5,-5 v -91.56771 c 0,-2.77 2.23,-5 5,-5 z" />
-    <g
-       id="g5538"
-       transform="translate(101.70894,141.96874)">
-      <path
-         id="path2669"
-         style="fill:none;stroke:#0d71ff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         transform="rotate(90)"
-         d="m 81.353795,-147.81264 a 17.67988,17.67988 0 0 1 -15.734978,15.73498" />
-      <path
-         id="path2671"
-         style="fill:none;stroke:#ffd500;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         transform="scale(-1)"
-         d="m -132.07765,-61.92272 a 17.67988,17.67988 0 0 1 -15.73497,15.734977" />
-      <path
-         id="path2673"
-         style="fill:none;stroke:#5bff0d;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         transform="rotate(-90)"
-         d="M -46.187743,151.50873 A 17.67988,17.67988 0 0 1 -61.922721,167.2437" />
-      <path
-         id="path2675"
-         style="fill:none;stroke:#ff1e00;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         d="M 167.24372,65.618822 A 17.67988,17.67988 0 0 1 151.50874,81.353799" />
-    </g>
-    <g
-       id="g5548"
-       transform="matrix(0.27,0,0,0.27,189.03266,147.80896)">
-      <path
-         id="path5540"
-         style="fill:none;stroke:#0d71ff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         transform="rotate(90)"
-         d="m 81.353795,-147.81264 a 17.67988,17.67988 0 0 1 -15.734978,15.73498" />
-      <path
-         id="path5542"
-         style="fill:none;stroke:#ffd500;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         transform="scale(-1)"
-         d="m -132.07765,-61.92272 a 17.67988,17.67988 0 0 1 -15.73497,15.734977" />
-      <path
-         id="path5544"
-         style="fill:none;stroke:#5bff0d;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         transform="rotate(-90)"
-         d="M -46.187743,151.50873 A 17.67988,17.67988 0 0 1 -61.922721,167.2437" />
-      <path
-         id="path5546"
-         style="fill:none;stroke:#ff1e00;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         d="M 167.24372,65.618822 A 17.67988,17.67988 0 0 1 151.50874,81.353799" />
-    </g>
-    <g
-       id="g5558"
-       transform="matrix(0.27,0,0,0.27,232.88982,229.23384)">
-      <path
-         id="path5550"
-         style="fill:none;stroke:#0d71ff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         transform="rotate(90)"
-         d="m 81.353795,-147.81264 a 17.67988,17.67988 0 0 1 -15.734978,15.73498" />
-      <path
-         id="path5552"
-         style="fill:none;stroke:#ffd500;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         transform="scale(-1)"
-         d="m -132.07765,-61.92272 a 17.67988,17.67988 0 0 1 -15.73497,15.734977" />
-      <path
-         id="path5554"
-         style="fill:none;stroke:#5bff0d;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         transform="rotate(-90)"
-         d="M -46.187743,151.50873 A 17.67988,17.67988 0 0 1 -61.922721,167.2437" />
-      <path
-         id="path5556"
-         style="fill:none;stroke:#ff1e00;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
-         d="M 167.24372,65.618822 A 17.67988,17.67988 0 0 1 151.50874,81.353799" />
-    </g>
+    <path
+       id="path2669"
+       style="fill:none;stroke:#0d71ff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
+       d="M 249.52158,223.32254 A 17.67988,17.67988 0 0 1 233.7866,207.58756" />
+    <path
+       id="path2671"
+       style="fill:none;stroke:#ffd500;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
+       d="m 233.78659,203.89146 a 17.67988,17.67988 0 0 1 15.73497,-15.73498" />
+    <path
+       id="path2673"
+       style="fill:none;stroke:#28f200;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke;stroke-opacity:1"
+       d="m 253.21767,188.15648 a 17.67988,17.67988 0 0 1 15.73497,15.73498" />
+    <path
+       id="path2675"
+       style="fill:none;stroke:#eb2c13;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke;stroke-opacity:1"
+       d="m 268.95266,207.58756 a 17.67988,17.67988 0 0 1 -15.73498,15.73498" />
+    <path
+       id="path5540"
+       style="fill:none;stroke:#0d71ff;stroke-width:0.648;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
+       d="m 228.94207,169.77448 a 4.7735676,4.7735676 0 0 1 -4.24844,-4.24844" />
+    <path
+       id="path5542"
+       style="fill:none;stroke:#ffd500;stroke-width:0.648;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
+       d="m 224.69363,164.52809 a 4.7735676,4.7735676 0 0 1 4.24844,-4.24844" />
+    <path
+       id="path5544"
+       style="fill:none;stroke:#28f200;stroke-width:0.648;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke;stroke-opacity:1"
+       d="m 229.94002,160.27965 a 4.7735676,4.7735676 0 0 1 4.24844,4.24844" />
+    <path
+       id="path5546"
+       style="fill:none;stroke:#eb2c13;stroke-width:0.648;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke;stroke-opacity:1"
+       d="m 234.18846,165.52604 a 4.7735676,4.7735676 0 0 1 -4.24844,4.24845" />
+    <path
+       id="path5550"
+       style="fill:none;stroke:#0d71ff;stroke-width:0.648;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
+       d="m 272.79923,251.19936 a 4.7735676,4.7735676 0 0 1 -4.24844,-4.24844" />
+    <path
+       id="path5552"
+       style="fill:none;stroke:#ffd500;stroke-width:0.648;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
+       d="m 268.55079,245.95297 a 4.7735676,4.7735676 0 0 1 4.24844,-4.24844" />
+    <path
+       id="path5554"
+       style="fill:none;stroke:#28f200;stroke-width:0.648;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke;stroke-opacity:1"
+       d="m 273.79718,241.70453 a 4.7735676,4.7735676 0 0 1 4.24844,4.24844" />
+    <path
+       id="path5556"
+       style="fill:none;stroke:#eb2c13;stroke-width:0.648;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke;stroke-opacity:1"
+       d="m 278.04562,246.95092 a 4.7735676,4.7735676 0 0 1 -4.24844,4.24845" />
   </g>
 </svg>
