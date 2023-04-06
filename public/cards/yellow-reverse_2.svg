@@ -7,42 +7,16 @@
    viewBox="0 0 64 101.56771"
    version="1.1"
    id="svg7812"
-   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
-   sodipodi:docname="yellow-reverse_2.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview7814"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     showgrid="false"
-     inkscape:zoom="1.5287038"
-     inkscape:cx="21.259841"
-     inkscape:cy="207.36522"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
   <defs
      id="defs7809" />
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-267.26389,-152.26399)">
     <path
        id="rect3426"
-       style="fill:#ffd500;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
+       style="fill:#f2ca00;fill-opacity:1;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
        d="m 272.26389,152.26399 h 54 c 2.77,0 5,2.23 5,5 v 91.56771 c 0,2.77 -2.23,5 -5,5 h -54 c -2.77,0 -5,-2.23 -5,-5 v -91.56771 c 0,-2.77 2.23,-5 5,-5 z" />
     <g
        id="g2393"

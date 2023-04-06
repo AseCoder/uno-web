@@ -1,6 +1,7 @@
 const io = require('../server');
 const game = require('./common');
 const endGame = require('./endGame');
+const playCards = require('./playCards');
 const Player = require('./playerClass');
 
 /** Creates socket.io event listeners for player requests.
@@ -59,7 +60,7 @@ function registerPlayerHandlers(socket) {
 				// -2 = name taken
 			}
 			socket.emit('game-info', game.generateGameInfo());
-			socket.emit('your-hand', game.players.data.find(x => x.nameEquals(name)).hand);
+			socket.emit('your-hand', game.players.data.find(x => x.nameEquals(name)).parseHand());
 			return cb(2);
 		}
 
@@ -75,14 +76,12 @@ function registerPlayerHandlers(socket) {
 			return cb(4);
 		}
 	});
-	socket.on('play-cards', cardsPlayed => {
-		console.log(' 1/2 received play-cards', cardsPlayed);
-	});
 	socket.on('give-game-info', () => {
 		socket.emit('game-info', game.generateGameInfo());
 	});
 	socket.on('give-hand', cb => {
 		cb(game.players.data.find(x => x.idEquals(socket.id))?.hand);
 	});
+	socket.on('play-cards', playCards);
 }
 module.exports = registerPlayerHandlers;

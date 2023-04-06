@@ -5,45 +5,56 @@ const game = require('./common');
  * Applies the effects of a card by sending messages to people
  * @param {CardEffects} effects
  * @param {number} effects.thisDraws How many cards this player should draw
- * @param {boolean} beginning If this card turned up at the beginning of play (effects only on current player)
+ * @param {object} [options={}] Options for special cases
+ * @param {boolean} options.beginning If this card turned up at the beginning of play (effects only on current player)
+ * @param {boolean} options.jumpedIn If these cards were played as someone jumped in
  * @returns {void}
  */
-function applyCardEffects(effects, beginning) { return new Promise(async (res, rej) => {
+function applyCardEffects(effects, options = {}) { return new Promise(async (res, rej) => {
+	const { beginning, jumpedIn } = options;
 	const currentPlayer = game.players.currentTurn;
-	if (effects.thisDraws > 0) {
+	if (effects.thisDraws > 0 && !options.jumpedIn) {
 		const drawnCards = [];
 		for (let i = 0; i < effects.thisDraws; i++) {
 			drawnCards.push(game.randomCard());
 		}
 		currentPlayer.addCards(drawnCards);
 	}
-	if (effects.changeDirection) {
+	if (effects.changeDirection && !options.jumpedIn) {
 		if (game.players.data.length > 2) game.direction.reverse(); else game.direction.skipNext += 1;
 	}
-	if (effects.nextDraws > 0) {
-		const drawnCards = [];
-		for (let i = 0; i < effects.nextDraws; i++) {
-			drawnCards.push(game.randomCard());
-		}
-		if (beginning) {
-			currentPlayer.addCards(drawnCards);
+	if (effects.nextDraws > 0 && !options.jumpedIn) {
+		if (game.houseRules.stackNextDraws) {
+			game.outstandingDrawPenalty += effects.nextDraws;
 		} else {
-			const nextplayer = game.players.data[game.turnIndex.getNext()];
-			const hand = nextplayer.addCards(drawnCards);
-			nextplayer.socket?.emit('your-hand', hand);
+			const drawnCards = [];
+			for (let i = 0; i < effects.nextDraws; i++) {
+				drawnCards.push(game.randomCard());
+			}
+			if (beginning) {
+				currentPlayer.addCards(drawnCards);
+			} else {
+				const nextplayer = game.players.data[game.turnIndex.getNext()];
+				nextplayer.addCards(drawnCards);
+				nextplayer.socket?.emit('your-hand', nextplayer.parseHand());
+			}
 		}
 	}
-	if (effects.thisDraws > 0 || (effects.nextDraws > 0 && beginning)) currentPlayer.socket?.emit('your-hand', currentPlayer.hand);
+	if (effects.thisDraws > 0 || (effects.nextDraws > 0 && beginning)) currentPlayer.socket?.emit('your-hand', currentPlayer.parseHand());
 	if (effects.chooseColor) {
 		let removeColorEmitter = () => {};
-		if (!beginning) io.emit('game-info', game.generateGameInfo({ players: true, discardPileTopCard: true }));
-		const p1 = new Promise(res1 => {
+		game.acceptingPlays = false;
+		if (!beginning) io.emit('game-info', game.generateGameInfo({ players: true, discardPileTopCard: true, lastPlayed: true, outstandingDrawPenalty: true }));
+		const p1 = new Promise((res1, rej1) => {
+			console.log('choose color!');
 			currentPlayer.once('chosen-color', color => {
 				console.log(`"${currentPlayer.name}" chose to play color ${color}`);
+				if (!['red', 'green', 'blue', 'yellow'].includes(color)) return rej2();
 				game.discardPileTopCard.setColor(color);
 				res1();
 			});
 			removeColorEmitter = currentPlayer.persistentEmit('choose-color');
+			game.addStopEverythingListener(() => rej1({}));
 		});
 		const p2 = new Promise((res2, rej2) => setTimeout(rej2, 30 * 1000));
 		try {
@@ -53,11 +64,13 @@ function applyCardEffects(effects, beginning) { return new Promise(async (res, r
 		}
 		currentPlayer.removeAllListeners('chosen-color');
 		removeColorEmitter();
+		game.acceptingPlays = true;
 	}
-	if (effects.skipNext > 0) {
+	if (effects.skipNext > 0 && !options.jumpedIn) {
 		game.direction.skipNext += effects.skipNext;
 	}
-	if (beginning && (effects.skipNext > 0 || effects.changeDirection) || effects.nextDraws > 0) game.turnIndex.setNext();
+	// this could be easier to understand
+	if (beginning && !options.jumpedIn && (effects.skipNext > 0 || effects.changeDirection) || (effects.nextDraws > 0 && !game.houseRules.stackNextDraws)) game.turnIndex.setNext();
 	res();
 })}
 module.exports = applyCardEffects;

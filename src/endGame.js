@@ -10,6 +10,9 @@ function endGame(winner) {
 	io.emit('game-info', game.generateGameInfo());
 	game.players.reset();
 	game.state.set(0);
+	game.resetStopEverythingListeners();
+	game.acceptingPlays = true;
+	game.direction.reset();
 	io.emit('end-game', winner);
 }
 module.exports = endGame;

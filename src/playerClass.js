@@ -1,4 +1,5 @@
 const io = require("../server");
+const parseCard = require("./parseCard");
 
 /** Creates a player
  * @param {string} name The username that this player has chosen
@@ -7,6 +8,7 @@ const io = require("../server");
  * @property {string} socketId The socket id of this player
  * @property {string[]} hand An array of cards in this player's hand
  * @property {object} socket The socket that corresponds to this.socketId
+ * @property {boolean} isConnected If this player has an active socket connection
 */
 class Player {
 	constructor(name, socketId) {
@@ -96,7 +98,7 @@ class Player {
 		return this.hand;
 	}
 	/**
-	 * Wrapper for socket.on()
+	 * Wrapper for socket.on(), in case of reconnect it adds the listener automatically
 	 * @param {string} event The event name to listen for
 	 * @param  {...any} args Other arguments, eg. data. last one can be cb
 	 */
@@ -105,7 +107,7 @@ class Player {
 		this.socket?.on(event, ...args);
 	}
 	/**
-	 * Wrapper for socket.once()
+	 * Wrapper for socket.once(), in case of reconnect it adds the listener automatically
 	 * @param {string} event The event name to listen for
 	 * @param  {...any} args Other arguments, eg. data. last one can be cb
 	 */
@@ -136,6 +138,12 @@ class Player {
 	get socket() {
 		if (!this.socketId) return;
 		return io.sockets.sockets.get(this.socketId);
+	}
+	get isConnected() {
+		return !!this.socketId;
+	}
+	parseHand() {
+		return this.hand.map(x => parseCard(x));
 	}
 }
 module.exports = Player;

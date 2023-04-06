@@ -7,11 +7,32 @@ const game = {
 	 * All the house rules and their activation status
 	 * @type {object}
 	 */
-	houseRules: {
-		stacking: false,
-		allowIllegalWD4: false,
-		drawUntilPlay: false,
-		jumpIn: false,
+	houseRules: Object.fromEntries(Object.entries(require('../public/houseRules.json')).map(x => {
+		x[1] = false;
+		return x;
+	})),
+	/**
+	 * Used to toggle a house rule on or off
+	 * @param {string} ruleName the name of the rule that is to be toggled
+	 * @returns {boolean} new state
+	 */
+	toggleHouseRule(ruleName) {
+		if (this.houseRules[ruleName] == undefined) return;
+		this.houseRules[ruleName] = !this.houseRules[ruleName];
+		return this.houseRules[ruleName];
+	},
+	houseRulesConfig() {
+		let num = 0;
+		Object.values(this.houseRules).forEach(active => {
+			num += active;
+			num <<= 1;
+		});
+		num >>= 1;
+		return num.toString(16);
+	},
+	importHouseRulesConfig(str) {
+		const num = parseInt(str, 16);
+		Object.keys(this.houseRules).reverse().forEach((houserule, i) => this.houseRules[houserule] = (num & 2 ** i) === 2 ** i);
 	},
 	/**
 	 * The UNO deck (pre 2018), long card names
@@ -36,23 +57,33 @@ const game = {
 	 * @property {Card} [discardPileTopCard] The Discard
 	 */
 	/**
-	 * Returns up-to-date information about the ongoing game for players. Will only include the chosen parts.
+	 * Returns up-to-date information about the ongoing game for players. Will only include the chosen parts. If you define any part, all others will be excluded.
 	 * @param {object} parts
 	 * @param {boolean} [parts.players=true]
 	 * @param {boolean} [parts.turnIndex=true]
+	 * @param {boolean} [parts.direction=true]
 	 * @param {boolean} [parts.discardPileTopCard=true]
+	 * @param {boolean} [parts.outstandingDrawPenalty=true]
 	 * @returns {GameInfo}
 	 */
-	generateGameInfo: function (parts) {
-		const players = this.players.data.map(player => [player.name, player.hand.length]);
-		const turnIndex = this.turnIndex.data;
-		const discardPileTopCard = this.discardPileTopCard.data;
-		if (!parts) return { players, turnIndex, discardPileTopCard };
-		return {
-			players: parts.players === true ? players : undefined,
-			turnIndex: parts.turnIndex === true ? turnIndex : undefined,
-			discardPileTopCard: parts.discardPileTopCard === true ? discardPileTopCard : undefined,
+	generateGameInfo: function (wantedParts) {
+		const partsData = {
+			players: this.players.data.map(player => [player.name, player.hand.length, player.isConnected]),
+			turnIndex: this.turnIndex.data,
+			direction: this.direction,
+			discardPileTopCard: this.discardPileTopCard.data,
+			outstandingDrawPenalty: this.outstandingDrawPenalty,
+			lastPlayed: this.discardPileTopCard.lastPlayed
 		}
+		if (wantedParts) {
+			Object.keys(partsData).forEach(x => {
+				if (!wantedParts[x]) delete partsData[x];
+			});
+		}
+		if (!this.houseRules.stackNextDraws) delete partsData.outstandingDrawPenalty;
+		// dont want to send this too many times
+		if (partsData.lastPlayed) this.discardPileTopCard.lastPlayed = [];
+		return partsData;
 	},
 	/**
 	 * Handles the players of the game
@@ -104,17 +135,19 @@ const game = {
 		 * @type {Card}
 		 */
 		data: {},
+		lastPlayed: [],
 		/**
 		 * 
 		 * @param {Card} newCard New Discard
 		 */
-		set: function (newCard) {
+		set: function (newCard, playedCards) {
 			if (!newCard) return;
 			if (typeof newCard === 'string') {
 				newCard = parseCard(newCard);
 				console.error(new TypeError('newCard is type string, expected parsed card'));
 			}
 			this.data = newCard;
+			this.lastPlayed = playedCards || [];
 		},
 		/**
 		 * Set the color of the Discard, if it isn't set yet. Meant for use with the wild card.
@@ -148,11 +181,23 @@ const game = {
 		 */
 		data: 0,
 		/**
+		 * The total amount of turns that have been played. Can be used to determine if the turn has changed since some point
+		 * @type {number}
+		 */
+		totalTurns: 0,
+		/**
 		 * 
 		 * @param {number} newIndex New turnIndex
 		 */
-		set: function (newIndex) {
+		set(newIndex) {
 			this.data = newIndex;
+		},
+		/**
+		 * Resets turnIndex and totalTurns
+		 */
+		reset() {
+			this.data = 0;
+			this.totalTurns = 0;
 		},
 		/**
 		 * Get the hypothetical next turnIndex, based on current turnIndex, direction (+skip) and player amount
@@ -169,10 +214,10 @@ const game = {
 		 * Sets the turnIndex to its next value
 		 * @returns {void}
 		 */
-		setNext() {
-			this.set(this.getNext());
+		setNext(jumpedIn) {
+			if (!jumpedIn) this.set(this.getNext());
 			game.direction.skipNext = 0;
-			console.log('turnindex', this.data);
+			this.totalTurns++;
 		}
 	},
 	/**
@@ -202,7 +247,48 @@ const game = {
 		 */
 		reverse() {
 			this.data = -this.data;
+		},
+		/**
+		 * Resets the direction and skipNext to their default values 1 and 0.
+		 */
+		reset() {
+			this.data = 1;
+			this.skipNext = 0;
 		}
+	},
+	_acceptingPlays: true,
+	/**
+	 * If play-cards should be handled for _anyone_ or if it should be returned as illegal. this will be false when choosing color
+	 * @type {boolean}
+	 */
+	get acceptingPlays() {
+		return this._acceptingPlays;
+	},
+	set acceptingPlays(bool) {
+		this._acceptingPlays = bool;
+	},
+	/**
+	 * The function that must be called whenever a legal answer to play-cards is sent. This is used to cancel turn timeouts.
+	 * @type {function}
+	 */
+	stopEverythingListeners: [],
+	addStopEverythingListener(func) {
+		this.stopEverythingListeners.push(func);
+	},
+	resetStopEverythingListeners() {
+		this.stopEverything();
+		this.stopEverythingListeners = [];
+	},
+	stopEverything() {
+		this.stopEverythingListeners.forEach(x => x());
+	},
+	_outstandingDrawPenalty: 0,
+	// How many cards the next player should draw. Used only if stackNextDraws is active
+	get outstandingDrawPenalty() {
+		return this._outstandingDrawPenalty;
+	},
+	set outstandingDrawPenalty(num) {
+		this._outstandingDrawPenalty = num;
 	}
 }
 module.exports = game;

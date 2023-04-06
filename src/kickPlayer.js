@@ -11,8 +11,9 @@ function kickPlayer(index) {
 	const nextPlayer = game.players.data[game.turnIndex.getNext()];
 	// handle the player to be deleted
 	const currentPlayer = game.players.data[index];
-	currentPlayer.removeAllListeners();
-	if (currentPlayer.socketId) io.sockets.sockets.get(currentPlayer.socketId).disconnect();
+	currentPlayer?.removeAllListeners();
+	if (currentPlayer?.socketId) io.sockets.sockets.get(currentPlayer.socketId).disconnect();
+	console.log('kicked a player');
 	// kick
 	game.players.splice(index, 1);
 	// check if game has to end

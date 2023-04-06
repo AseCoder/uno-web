@@ -6,24 +6,62 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="master.css">
 	<meta name="description" content="Play UNO Now">
-	<meta name="theme-color" content="#e3331b" />
+	<meta name="theme-color" content="#eb2c13" />
 	<title>UNO!</title>
 </head>
 <body>
-	<h1>welcome to uno</h1>
-	<p>enter name</p>
-	<input type="text" name="" id="name">
-	<button id="set-name">set name & join game</button>
-	<div id="messages"></div>
-	<p>players:</p>
-	<div id="players"></div>
-	<p>the discard:</p>
-	<img src="" alt="" id="discard">
-	<p id="discardcolor">color (incase wild):</p>
-	<span id="yourhandtext">your hand:</span>
-	<span hidden id="myturn" class="redBorder">It's your turn!</span>
-	<div id="hand"></div>
-	<button onclick="playCards([])">draw one instead</button>
+	<div class="main-top">
+		<div class="toprow">
+			<div class="login">
+				<input type="text" id="input-username" class="darkinput" placeholder="Username">
+				<button id="set-username" onclick="setUsername()" class="darkinput">Join</button>
+			</div>
+			<div class="title">
+				<h1>UNO</h1>
+			</div>
+			<div class="info">
+				<p>Read the <a href="rules.html" id="rules" target="_blank">rules</a>.</p>
+			</div>
+		</div>
+		<div id="messages" class="darkinput"></div>
+		<div class="players-container">
+			<p id="direction">Direction</p>
+			<div id="players"></div>
+		</div>
+	</div>
+	<div class="main-middle">
+		<div id="middle-left">
+			<!-- draw penalty here -->
+			<!--
+				<div class="drawpile"></div>
+			-->
+		</div>
+		<div id="middle-middle">
+			<div id="discard">
+				<img src="/cards/face_down.svg" alt="" class="cardImg">
+			</div>
+			<div id="penaltyaction-container"></div>
+		</div>
+		<div class="middle-right">
+			<div id="playedcards"></div>
+		</div>
+	</div>
+	</div>
+	<div class="main-bottom">
+		<div class="yourturn">
+			<p id="yourturnindicator">It's Your turn!</p>
+		</div>
+		<div class="bottomrow">
+			<div id="leftcontrols">
+				<button id="drawone" class="controlbutton" onclick="drawOne()">Draw One Instead</button>
+				<!--uno-->
+			</div>
+			<div id="hand"></div>
+			<div id="rightcontrols">
+				<button id="multiselect" class="controlbutton controlinactive toggleable" onclick="game.multiselect = !game.multiselect">Toggle Multiselect</button>
+			</div>
+		</div>
+	</div>
 </body>
 <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
 <script src="app.js"></script>

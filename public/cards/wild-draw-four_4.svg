@@ -3,41 +3,15 @@
 
 <svg
    width="64mm"
-   height="101.56771mm"
-   viewBox="0 0 64 101.56771"
+   height="101.56772mm"
+   viewBox="0 0 64 101.56772"
    version="1.1"
    id="svg7812"
-   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
-   sodipodi:docname="wild-draw-four_4.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview7814"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     showgrid="false"
-     inkscape:zoom="1.5287038"
-     inkscape:cx="80.133249"
-     inkscape:cy="211.94427"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
   <defs
      id="defs7809" />
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-215.144,-153.84875)">
     <path
@@ -67,7 +41,7 @@
          id="path27240" />
     </g>
     <path
-       style="color:#000000;fill:#ffd500;fill-opacity:1;stroke:#000000;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-dashoffset:117.165;stroke-opacity:1;paint-order:markers fill stroke"
+       style="color:#000000;fill:#f2ca00;fill-opacity:1;stroke:#000000;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-dashoffset:117.165;stroke-opacity:1;paint-order:markers fill stroke"
        d="m 229.91184,205.23756 c -2.38764,0 -4.3418,1.95416 -4.3418,4.3418 v 11.90234 c 0,2.38764 1.95416,4.3418 4.3418,4.3418 h 6.68164 c 2.38763,0 4.3418,-1.95416 4.3418,-4.3418 v -11.90234 c 0,-2.38764 -1.95417,-4.3418 -4.3418,-4.3418 z m 0,2 h 6.68164 c 1.31423,0 2.3418,1.02757 2.3418,2.3418 v 11.90234 c 0,1.31423 -1.02757,2.3418 -2.3418,2.3418 h -6.68164 c -1.31423,0 -2.3418,-1.02757 -2.3418,-2.3418 v -11.90234 c 0,-1.31423 1.02757,-2.3418 2.3418,-2.3418 z"
        id="path923" />
     <path

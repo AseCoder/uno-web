@@ -7,42 +7,16 @@
    viewBox="0 0 64 101.56771"
    version="1.1"
    id="svg7812"
-   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
-   sodipodi:docname="yellow-draw-two_2.svg"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview7814"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     showgrid="false"
-     inkscape:zoom="1.5287038"
-     inkscape:cx="82.095694"
-     inkscape:cy="191.0115"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
   <defs
      id="defs7809" />
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-284.18234,-137.53206)">
     <path
        id="rect2533"
-       style="fill:#ffd500;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
+       style="fill:#f2ca00;fill-opacity:1;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dashoffset:117.165;paint-order:markers fill stroke"
        d="m 289.18234,137.53206 h 54 c 2.77,0 5,2.23 5,5 v 91.56771 c 0,2.77 -2.23,5 -5,5 h -54 c -2.77,0 -5,-2.23 -5,-5 v -91.56771 c 0,-2.77 2.23,-5 5,-5 z" />
     <g
        id="g89461"
@@ -51,8 +25,7 @@
       <path
          style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-dashoffset:117.165;stroke-opacity:1;paint-order:markers fill stroke"
          d="m 24.941748,125.42332 h 6.681641 c 2.196666,0 3.990234,1.79533 3.990234,3.99219 v 11.90234 c 0,2.19686 -1.793377,3.98828 -3.990234,3.98828 h -6.681641 c -2.196857,0 -3.992187,-1.79161 -3.992187,-3.98828 v -11.90234 c 0,-2.19667 1.795521,-3.99219 3.992187,-3.99219 z m 0,1.29883 c -1.496668,0 -2.691406,1.19669 -2.691406,2.69336 v 11.90234 c 0,1.49667 1.195086,2.68945 2.691406,2.68945 h 6.681641 c 1.496321,0 2.689453,-1.19313 2.689453,-2.68945 v -11.90234 c 0,-1.49632 -1.192786,-2.69336 -2.689453,-2.69336 z"
-         id="path89457"
-         sodipodi:nodetypes="ssssssssssssssssss" />
+         id="path89457" />
       <path
          id="path89459"
          style="color:#000000;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:0;stroke-dasharray:none;stroke-dashoffset:117.165;stroke-opacity:1;paint-order:markers fill stroke"

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>UNO Rules</title>
+	<style>
+		body {
+			background-color: #111;
+			color: white;
+			font-family: Helvetica, Arial, sans-serif;
+		}
+		a {
+			color: #0d71ff;
+		}
+		.leftMargin {
+			margin-left: 30px;
+		}
+	</style>
+</head>
+<body>
+	<h1>UNO Rules</h1>
+	<h2>Official rules:</h2>
+	<p>Please read the official rules by <a href="https://service.mattel.com/instruction_sheets/GDJ85-Eng.pdf" target="_blank">Mattel</a> and refer to <a href="https://en.wikipedia.org/wiki/Uno_(card_game)#Official_rules" target="_blank">Wikipedia</a> for corner cases.</p>
+	<p>This game uses the pre-2018 deck that doesn't include custom or "swap hands" cards.</p>
+	<h2>House rules:</h2>
+	<div id="houserules"></div>
+</body>
+<script>
+	Promise.all([
+		new Promise((res, rej) => {
+			fetch('houseRules.json', { cache: "force-cache" }).then(response => {
+				res(response.json());
+			}).catch(rej);
+		}),
+		new Promise((res, rej) => {
+			fetch('/activehouserules').then(response => {
+				res(response.json());
+			}).catch(rej);
+		})
+	]).then(values => {
+		const div = document.getElementById('houserules');
+		const descs = values[0];
+		Object.entries(descs).forEach(x => {
+			const title = document.createElement('p');
+			title.textContent = `${values[1][x[0]] ? '✓' : 'x'} ${x[1].title}`;
+			const desc = document.createElement('p');
+			desc.classList.add('leftMargin');
+			desc.textContent = x[1].description;
+			div.append(title, desc);
+		});
+	}).catch(err => {
+		console.log(err);
+	});
+	
+</script>
+</html>

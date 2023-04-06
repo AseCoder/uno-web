@@ -4,5 +4,13 @@
 	"3": [ "Not an array", "cardsPlayed is not an instance of Array." ],
 	"4": [ "Too many cards", "You played more cards than is allowed. Is Stacking activated?" ],
 	"5": [ "Not matching color or symbol", "The card(s) you played doesn't match the Discard by either color or symbol." ],
-	"6": [ "Illegal WD4", "You played a Wild Draw Four when your hand included cards whose color matched the Discard." ]
+	"6": [ "Illegal WD4", "You played a Wild Draw Four when your hand included cards whose color matched the Discard." ],
+	"7": [ "No common symbol", "The cards you played don't share a number or symbol." ],
+	"8": [ "The game is not in Started state", "There must be an active game in order to play cards." ],
+	"9": [ "Game is not accepting plays", "Nobody can play cards right now. Is somebody choosing a color to play?" ],
+	"10": [ "The turn has already changed", "You can only play the drawn card on your own turn." ],
+	"11": [ "Timed out", "You didnt play cards or make a decision fast enough." ],
+	"12": [ "Not the same card", "The card you played doesn't match the Discard exactly (see rules, jump-in)" ],
+	"13": [ "Not matching symbol", "The bottom card you played doesn't match the Discard. (see rules, multiple cards)" ],
+	"14": [ "Not the same type of draw card", "If you want to stack the penalty, you must play a card with the same symbol" ]
 }

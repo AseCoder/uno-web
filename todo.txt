@@ -1,26 +1,38 @@
 turn jumping around unexpectedly -- CANNOT REPRODUCE
 
-if currentTurn is offline, expedite turn skip (skip after 15-20 sec) -- DONE
-
-if skips 2 turns, kick (take note of next to play, kick, set turn) -- DONE
-
-name length max 35 char -- STARTED
-
-exclude turnindex from gameinfo when choosing color -- DONE
-
 crash when join midgame -- CANNOT REPRODUCE
 
-game ended null
+game ended null -- STARTED
 
-play-cards are being dropped, add a universal listener to catch faults
+play-cards are being dropped, add a universal listener to catch faults -- STARTED
 
 milestone: new ui
 	uno-button
 
-	online label
+	online label -- DONE
 
-	multi-select
+	multi-select -- DONE
 
-	houserules json
+	houserules json -- DONE
 
-	name localstorage
+	name localstorage -- DONE
+
+	players in two lines -- DONE
+
+	when a draw card is played, if the relevant house rule is active, display "draw x cards" on client side. if they click it, give them cards and next turn. if they dont click it:
+		if they play a draw card, legal
+		else illegal
+	else just give them cards
+
+	somehow track the accumulated penalty of consecutive draw cards -- STARTED
+	when it is a players turn, advise them of that penalty (maybe in gameinfo? so others can see too) -- STARTED
+	if player decides to draw the accumulated penalty, the player just emits play-cards empty.
+	if accumulated penalty, draw that many cards, else draw one card -- STARTED
+	    reset accumulated penalty
+
+	what if everybodys playing +2 and someone jumps in?
+
+	is card.jumpedIn required?
+
+
+multiple cards wild doesnt match color at all -- DONE

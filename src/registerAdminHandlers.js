@@ -20,5 +20,17 @@ function registerAdminHandlers(socket) {
 		if (data.pin !== process.env.ADMINPIN) return;
 		cb(game.players.data);
 	});
+	socket.on('toggle-houserule', (data, cb) => {
+		if (data.pin !== process.env.ADMINPIN) return;
+		cb(game.toggleHouseRule(data.ruleName));
+	});
+	socket.on('fetch-houserulesconfig', (data, cb) => {
+		if (data.pin !== process.env.ADMINPIN) return;
+		cb(game.houseRulesConfig());
+	});
+	socket.on('import-houserulesconfig', (data, cb) => {
+		if(data.pin !== process.env.ADMINPIN) return;
+		cb(game.importHouseRulesConfig(data.str));
+	});
 }
 module.exports = registerAdminHandlers;
