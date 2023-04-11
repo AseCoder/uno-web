@@ -34,8 +34,7 @@ async function nextTurn(jumpedIn, beginning) {
 				break;
 			} else {
 				// do they have to draw many cards?
-				console.log('houserule', game.houseRules.stackNextDraws, 'outstandingDrawPenalty', game.outstandingDrawPenalty);
-				if (game.houseRules.stackNextDraws && game.outstandingDrawPenalty > 0) {
+				if (game.proactivePenalties && game.outstandingDrawPenalty > 0) {
 					// draw that amount of cards
 					const drawn = [];
 					for (let i = 0; i < game.outstandingDrawPenalty; i++) {

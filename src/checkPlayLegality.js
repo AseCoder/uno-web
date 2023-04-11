@@ -72,16 +72,12 @@ function checkPlayLegality(cardsPlayed, discardPileTopCard, hand, jumpedIn) {
 			return result;
 		}
 		// if player jumped in and the bottom card they played isnt exactly the discard, then illegal
-		console.log('playlegality jumpin');
-		console.log('jumpedIn', jumpedIn);
-		console.log('cardsPlayed[0]', cardsPlayed[0]);
-		console.log('discardPileTopCard.name', discardPileTopCard.name);
 		if (jumpedIn && cardsPlayed[0] !== discardPileTopCard.name) {
 			result.reason = 12;
 			return result;
 		}
 		// if there is an outstanding penalty and the player chose to play a card, it must match by symbol
-		if (game.outstandingDrawPenalty > 0 && parsedBottomCard.symbol !== discardPileTopCard.symbol) {
+		if (game.outstandingDrawPenalty > 0 && game.proactivePenalties && parsedBottomCard.symbol !== discardPileTopCard.symbol) {
 			result.reason = 14;
 			return result;
 		}

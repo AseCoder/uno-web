@@ -1,34 +1,39 @@
 {
 	"multipleCards": {
 		"title": "Multiple Cards",
-		"description": "Allows you to play multiple cards on your turn if they have the same symbol. The bottom card played must match the Discard by color or symbol.",
-		"implemented": "maybe"
+		"description": "Allows you to play multiple cards on your turn if they have the same symbol. The bottom card played must match the Discard by color or symbol."
 	},
 	"stackNextDraws": {
 		"title": "Progressive Draw Cards",
 		"description": "If a draw card is played, and the following player has a card with the same symbol, they can play that card and \"stack\" the penalty, which adds to the current penalty and passes it to the following player.",
-		"enablesProactivePenalties": true,
-		"implemented": true
+		"enablesProactivePenalties": true
 	},
 	"allowIllegalWD4": {
 		"title": "Allow illegal plays of Wild Draw Four",
-		"description": "Allows you to always play a Wild Draw Four card, even if you have cards of the matching color.",
-		"implemented": true
+		"description": "Allows you to always play a Wild Draw Four card, even if you have cards of the matching color."
 	},
 	"drawUntilPlay": {
 		"title": "Draw until you can play",
-		"description": "If you cannot play any cards, you must draw cards one by one until the drawn card can be played. You can choose to play that card.",
-		"implemented": false
+		"description": "If you cannot play any cards, you must draw cards one by one until the drawn card can be played. You can choose to play that card."
 	},
 	"draw3": {
 		"title": "Draw up to 3 cards",
-		"description": "If you cannot play any cards, you must draw cards one by one until the drawn card can be played or until you have drawn 3 cards, whichever comes first.",
-		"implemented": false
+		"description": "If you cannot play any cards, you must draw cards one by one until the drawn card can be played or until you have drawn 3 cards, whichever comes first."
 	},
-	"jumpIn": {
-		"title": "Jump-in",
+	"jumpInMattel": {
+		"title": "Jump-in according to Mattel",
 		"description": "If you are holding the exact same card as the Discard, you may play it immediately, regardless of whose turn it is. Play resumes from the player who jumped in.",
 		"enablesProactivePenalties": true,
-		"implemented": true
+		"incompatible": [
+			"jumpInSingle"
+		]
+	},
+	"jumpInSingle": {
+		"title": "Jump-in with no second turn",
+		"description": "If you are holding the exact same card as the Discard, you may play it immediately, regardless of whose turn it is. Play resumes from the player whose turn is after the player who jumped in.",
+		"enablesProactivePenalties": true,
+		"incompatible": [
+			"jumpInMattel"
+		]
 	}
 }

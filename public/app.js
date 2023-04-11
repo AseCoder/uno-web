@@ -206,6 +206,7 @@ function playdrawonePopup(card) {
 	const img = document.createElement('img');
 	img.classList.add('cardImg');
 	img.src = '/cards/' + card + '.svg';
+	img.alt = card;
 	popupManager.new({
 		elements: [
 			'You drew a',
@@ -332,6 +333,7 @@ function drawDiscardPileTopCard() {
 	const img = document.createElement('img');
 	img.classList.add('cardImg');
 	img.src = '/cards/' + game.discardPileTopCard.name + '.svg';
+	img.alt = game.discardPileTopCard.name;
 	if (game.discardPileTopCard.name.startsWith('wild') && game.discardPileTopCard.color) img.classList.add('discard-' + game.discardPileTopCard.color);
 	div.appendChild(img);
 }
@@ -346,6 +348,7 @@ function drawHand() {
 		btn.classList.add('cardBtn');
 		const img = document.createElement('img');
 		img.src = '/cards/' + card.name + '.svg';
+		img.alt = card.name;
 		img.classList.add('cardImg');
 		btn.appendChild(img);
 		if (game.multiselect) {
@@ -392,6 +395,7 @@ async function animatePlayedCards() {
 		const div = document.createElement('div');
 		const img = document.createElement('img');
 		img.src = '/cards/' + card + '.svg';
+		img.alt = card;
 		div.appendChild(img);
 		container.appendChild(div);
 		divsToRemove.push(div);

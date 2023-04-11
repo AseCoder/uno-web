@@ -29,9 +29,7 @@ async function gameStart() {
 	const result = checkPlayLegality(game.discardPileTopCard.data);
 	io.emit('game-info', game.generateGameInfo({ players: true, discardPileTopCard: true }));
 	await new Promise((res) => setTimeout(res, 2000));
-	console.log('started discard effects');
 	await applyCardEffects(result.effects, { beginning: true });
-	console.log('ended discard effects');
 	nextTurn(false, true);
 }
 module.exports = gameStart;

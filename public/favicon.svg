@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="56.199867mm"
+   height="40.628254mm"
+   viewBox="0 0 56.199867 40.628255"
+   version="1.1"
+   id="svg7812"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7809" />
+  <path
+     style="color:#000000;fill:none;stroke:#000000;stroke-width:5;stroke-linecap:square;stroke-miterlimit:1.42;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+     d="m 30.987024,2.5417876 c -3.081722,0.157458 -6.316579,0.763441 -9.55664,1.853516 -6.480123,2.18015 -11.7732053,5.8920994 -15.1093753,10.1855474 -3.3361696,4.293448 -4.724656,9.223172 -3.2187496,13.699219 1.505906,4.476047 5.5908286,7.563033 10.8437499,8.966797 5.252921,1.403763 11.713236,1.160619 18.193359,-1.019532 6.480123,-2.18015 11.773205,-5.892098 15.109375,-10.185547 C 50.584914,21.74834 51.9734,16.82057 50.467493,12.344523 48.961588,7.8684756 44.876664,4.7814896 39.623743,3.3777256 36.997283,2.6758436 34.068747,2.3843306 30.987024,2.5417876 Z m 0.06641,1.300782 c 2.958571,-0.150968 5.755048,0.128453 8.234375,0.791015 4.958653,1.325125 8.610234,4.150904 9.947265,8.1250004 1.337032,3.974097 0.13756,8.433398 -3.011718,12.486328 -3.149279,4.052931 -8.238771,7.644151 -14.498047,9.75 -6.259276,2.10585 -12.484706,2.319266 -17.44336,0.994141 -4.9586533,-1.325125 -8.6102343,-4.150903 -9.9472649,-8.125 -1.337032,-3.974096 -0.135607,-8.431445 3.0136716,-12.484375 3.1492783,-4.05293 8.2368173,-7.6461044 14.4960933,-9.7519534 3.129638,-1.052925 6.250413,-1.634188 9.208985,-1.785156 z"
+     id="ellipse870" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;fill:none;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     x="-2.7792037"
+     y="34.118855"
+     id="text926"
+     transform="rotate(-15)"><tspan
+       id="tspan924"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5778px;font-family:Arial;-inkscape-font-specification:Arial;fill:none;fill-opacity:1;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-2.7792037"
+       y="34.118855">UNO</tspan></text>
+  <ellipse
+     style="fill:none;stroke:#eb2c13;stroke-width:1.3;stroke-linecap:square;stroke-miterlimit:1.42;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+     id="path394"
+     cx="18.909637"
+     cy="27.792721"
+     rx="24.337215"
+     ry="16.143066"
+     transform="rotate(-18.594822)" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     x="-2.7792037"
+     y="34.118855"
+     id="text7405"
+     transform="rotate(-15)"><tspan
+       id="tspan7403"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5778px;font-family:Arial;-inkscape-font-specification:Arial;fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-2.7792037"
+       y="34.118855">UNO</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;fill:#f2ca00;fill-opacity:1;stroke:none;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     x="-2.7792037"
+     y="34.118855"
+     id="text5839"
+     transform="rotate(-15)"><tspan
+       id="tspan5837"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5778px;font-family:Arial;-inkscape-font-specification:Arial;fill:#f2ca00;fill-opacity:1;stroke:none;stroke-width:0.6;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-2.7792037"
+       y="34.118855">UNO</tspan></text>
+</svg>

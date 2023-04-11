@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
 	<title>UNO Rules</title>
 	<style>
 		body {
@@ -44,7 +45,7 @@
 		const descs = values[0];
 		Object.entries(descs).forEach(x => {
 			const title = document.createElement('p');
-			title.textContent = `${values[1][x[0]] ? '✓' : 'x'} ${x[1].title}`;
+			title.textContent = `${values[1][x[0]] ? '✅' : '❌'} ${x[1].title}`;
 			const desc = document.createElement('p');
 			desc.classList.add('leftMargin');
 			desc.textContent = x[1].description;

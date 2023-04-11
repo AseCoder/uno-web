@@ -22,6 +22,20 @@ const game = {
 		return this.houseRules[ruleName];
 	},
 	houseRulesConfig() {
+		// check compatiblity
+		// loop through all houserules
+		const compatError = Object.keys(this.houseRules).some(x => {
+			// if the houserule is active,
+			if (!this.houseRules[x]) return false;
+
+			const houseRule = require('../public/houseRules.json')[x];
+			// loop through its incompatibles
+			// if this incompatible house rule is active, this house rule config is not compatible with itself
+			return houseRule.incompatible?.some(y => this.houseRules[y]);
+		});
+
+		if (compatError) return "-1";
+
 		let num = 0;
 		Object.values(this.houseRules).forEach(active => {
 			num += active;
@@ -33,6 +47,9 @@ const game = {
 	importHouseRulesConfig(str) {
 		const num = parseInt(str, 16);
 		Object.keys(this.houseRules).reverse().forEach((houserule, i) => this.houseRules[houserule] = (num & 2 ** i) === 2 ** i);
+	},
+	get proactivePenalties() {
+		return Object.keys(this.houseRules).some(x => require('../public/houseRules.json')[x].enablesProactivePenalties);
 	},
 	/**
 	 * The UNO deck (pre 2018), long card names
@@ -80,7 +97,7 @@ const game = {
 				if (!wantedParts[x]) delete partsData[x];
 			});
 		}
-		if (!this.houseRules.stackNextDraws) delete partsData.outstandingDrawPenalty;
+		if (!this.proactivePenalties) delete partsData.outstandingDrawPenalty;
 		// dont want to send this too many times
 		if (partsData.lastPlayed) this.discardPileTopCard.lastPlayed = [];
 		return partsData;
@@ -215,7 +232,7 @@ const game = {
 		 * @returns {void}
 		 */
 		setNext(jumpedIn) {
-			if (!jumpedIn) this.set(this.getNext());
+			if (!(jumpedIn && game.houseRules.jumpInMattel)) this.set(this.getNext());
 			game.direction.skipNext = 0;
 			this.totalTurns++;
 		}

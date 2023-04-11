@@ -12,7 +12,7 @@ async function actuallyPlayCards(cardsPlayed, cbLegal, player, jumpedIn) {
 	game.turnIndex.set(game.players.data.findIndex(x => x.idEquals(player.socketId)));
 	player.removeCards(cardsPlayed);
 	player.socket?.emit('your-hand', player.parseHand());
-	game.discardPileTopCard.set(parseCard(cardsPlayed[cardsPlayed.length - 1], jumpedIn), cardsPlayed);
+	game.discardPileTopCard.set(parseCard(cardsPlayed[cardsPlayed.length - 1]), cardsPlayed);
 	if (player.hand.length === 0) {
 		endGame(player.name);
 		return false;
@@ -40,8 +40,7 @@ async function playCards(cardsPlayed, cbLegal) {
 			cbLegal(true);
 			game.stopEverything();
 			// do they have to draw many cards?
-			console.log('houserule', game.houseRules.stackNextDraws, 'outstandingDrawPenalty', game.outstandingDrawPenalty);
-			if (game.houseRules.stackNextDraws && game.outstandingDrawPenalty > 0) {
+			if (game.proactivePenalties && game.outstandingDrawPenalty > 0) {
 				// draw that amount of cards
 				const drawn = [];
 				for (let i = 0; i < game.outstandingDrawPenalty; i++) {
@@ -101,8 +100,7 @@ async function playCards(cardsPlayed, cbLegal) {
 		}
 	} else { // if not their turn
 		// if no jump-in house rule active
-		if (!game.houseRules.jumpIn || cardsPlayed.length === 0) return cbLegal(false, 1);
-		console.log('player jumped in');
+		if (!(game.houseRules.jumpInMattel || game.houseRules.jumpInSingle) || cardsPlayed.length === 0) return cbLegal(false, 1);
 		// if someone is choosing to play a drawn card, that client notices that a jump in happened (turn changed)
 		const result = await actuallyPlayCards(cardsPlayed, cbLegal, player, true);
 		if (result) nextTurn(true);

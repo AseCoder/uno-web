@@ -13,42 +13,48 @@ const game = require('./common');
 function applyCardEffects(effects, options = {}) { return new Promise(async (res, rej) => {
 	const { beginning, jumpedIn } = options;
 	const currentPlayer = game.players.currentTurn;
-	if (effects.thisDraws > 0 && !options.jumpedIn) {
+	// effects should be applied on the current player if jumpedIn NAND houserules.jumpInMattel
+	const allowCurrentplayerEffects = !(jumpedIn && game.houseRules.jumpInMattel);
+	if (effects.thisDraws > 0 && allowCurrentplayerEffects) {
 		const drawnCards = [];
 		for (let i = 0; i < effects.thisDraws; i++) {
 			drawnCards.push(game.randomCard());
 		}
 		currentPlayer.addCards(drawnCards);
 	}
-	if (effects.changeDirection && !options.jumpedIn) {
+	if (effects.changeDirection && allowCurrentplayerEffects) {
 		if (game.players.data.length > 2) game.direction.reverse(); else game.direction.skipNext += 1;
 	}
-	if (effects.nextDraws > 0 && !options.jumpedIn) {
-		if (game.houseRules.stackNextDraws) {
-			game.outstandingDrawPenalty += effects.nextDraws;
-		} else {
-			const drawnCards = [];
-			for (let i = 0; i < effects.nextDraws; i++) {
-				drawnCards.push(game.randomCard());
+	if (effects.nextDraws > 0) {
+		if (jumpedIn && game.houseRules.jumpInMattel) {
+			if (game.proactivePenalties) {
+				game.outstandingDrawPenalty -= effects.nextDraws;
 			}
-			if (beginning) {
-				currentPlayer.addCards(drawnCards);
+		} else {
+			if (game.proactivePenalties) {
+				game.outstandingDrawPenalty += effects.nextDraws;
 			} else {
-				const nextplayer = game.players.data[game.turnIndex.getNext()];
-				nextplayer.addCards(drawnCards);
-				nextplayer.socket?.emit('your-hand', nextplayer.parseHand());
+				const drawnCards = [];
+				for (let i = 0; i < effects.nextDraws; i++) {
+					drawnCards.push(game.randomCard());
+				}
+				if (beginning) {
+					currentPlayer.addCards(drawnCards);
+				} else {
+					const nextplayer = game.players.data[game.turnIndex.getNext()];
+					nextplayer.addCards(drawnCards);
+					nextplayer.socket?.emit('your-hand', nextplayer.parseHand());
+				}
 			}
 		}
 	}
-	if (effects.thisDraws > 0 || (effects.nextDraws > 0 && beginning)) currentPlayer.socket?.emit('your-hand', currentPlayer.parseHand());
+	if ((effects.thisDraws > 0 || effects.nextDraws > 0 && beginning) && allowCurrentplayerEffects) currentPlayer.socket?.emit('your-hand', currentPlayer.parseHand());
 	if (effects.chooseColor) {
 		let removeColorEmitter = () => {};
 		game.acceptingPlays = false;
 		if (!beginning) io.emit('game-info', game.generateGameInfo({ players: true, discardPileTopCard: true, lastPlayed: true, outstandingDrawPenalty: true }));
 		const p1 = new Promise((res1, rej1) => {
-			console.log('choose color!');
 			currentPlayer.once('chosen-color', color => {
-				console.log(`"${currentPlayer.name}" chose to play color ${color}`);
 				if (!['red', 'green', 'blue', 'yellow'].includes(color)) return rej2();
 				game.discardPileTopCard.setColor(color);
 				res1();
@@ -66,11 +72,11 @@ function applyCardEffects(effects, options = {}) { return new Promise(async (res
 		removeColorEmitter();
 		game.acceptingPlays = true;
 	}
-	if (effects.skipNext > 0 && !options.jumpedIn) {
+	if (effects.skipNext > 0 && allowCurrentplayerEffects) {
 		game.direction.skipNext += effects.skipNext;
 	}
 	// this could be easier to understand
-	if (beginning && !options.jumpedIn && (effects.skipNext > 0 || effects.changeDirection) || (effects.nextDraws > 0 && !game.houseRules.stackNextDraws)) game.turnIndex.setNext();
+	if (beginning && allowCurrentplayerEffects && (effects.skipNext > 0 || effects.changeDirection) || (effects.nextDraws > 0 && !game.proactivePenalties)) game.turnIndex.setNext();
 	res();
 })}
 module.exports = applyCardEffects;
