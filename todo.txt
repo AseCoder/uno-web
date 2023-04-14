@@ -1,38 +1,9 @@
-turn jumping around unexpectedly -- CANNOT REPRODUCE
+uno-button
 
-crash when join midgame -- CANNOT REPRODUCE
+shorter turn -- DONE
 
-game ended null -- STARTED
+countdown on user side -- DONE
 
-play-cards are being dropped, add a universal listener to catch faults -- STARTED
+more logging to admin console, admin eval?
 
-milestone: new ui
-	uno-button
-
-	online label -- DONE
-
-	multi-select -- DONE
-
-	houserules json -- DONE
-
-	name localstorage -- DONE
-
-	players in two lines -- DONE
-
-	when a draw card is played, if the relevant house rule is active, display "draw x cards" on client side. if they click it, give them cards and next turn. if they dont click it:
-		if they play a draw card, legal
-		else illegal
-	else just give them cards
-
-	somehow track the accumulated penalty of consecutive draw cards -- STARTED
-	when it is a players turn, advise them of that penalty (maybe in gameinfo? so others can see too) -- STARTED
-	if player decides to draw the accumulated penalty, the player just emits play-cards empty.
-	if accumulated penalty, draw that many cards, else draw one card -- STARTED
-	    reset accumulated penalty
-
-	what if everybodys playing +2 and someone jumps in?
-
-	is card.jumpedIn required?
-
-
-multiple cards wild doesnt match color at all -- DONE
+if very many cards are played, css breaks -- DONE

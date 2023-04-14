@@ -12,6 +12,12 @@ document.getElementById('fetch-players').onclick = e => {
 	socket.emit('fetch-players', { pin: document.getElementById('pin').value }, console.log);
 }
 
+document.getElementById('fetch-gameinfo').onclick = e => {
+	socket.emit('give-game-info');
+}
+
+socket.on('game-info', console.log);
+
 document.getElementById('fetch-houserules').onclick = e => {
 	fetch('/activehouserules').then(async response => {
 		const houserules = await response.json();

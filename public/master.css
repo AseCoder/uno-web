@@ -21,6 +21,7 @@ body {
 	height: calc(100% - 16px);
 	flex-direction: column;
 	justify-content: space-between;
+	overflow-x: hidden;
 }
 .toprow {
 	display: flex;
@@ -145,11 +146,35 @@ a {
 }
 #middle-left {
 	flex: 1;
-	text-align: right;
+	display: flex;
 }
-#outstandingpenaltyIndicator {
+#countdowncontainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+}
+#countdown {
 	width: 80px;
 	height: 80px;
+	border-radius: 50%;
+	text-align: center;
+	filter: drop-shadow(0 0 4px var(--uno-red));
+}
+#countdownnumber {
+	line-height: 80px;
+	height: 80px;
+	text-shadow: 0 0 8px black;
+	margin: 0;
+}
+#outstandingpenaltyIndicatorContainer {
+	text-align: right;
+	flex: 1;
+}
+#outstandingpenaltyIndicator {
+	width: max-content;
+	height: auto;
+	aspect-ratio: 1;
 	border-radius: 10px;
 	margin-right: 60px;
 	margin-top: 20px;
@@ -159,6 +184,7 @@ a {
 	align-items: center;
 	transform: rotate(-7deg);
 	background-color: var(--dark-gray);
+	padding: 10px;
 }
 #outstandingpenaltyIndicator.red {
 	background-color: var(--uno-red) !important;
@@ -178,11 +204,11 @@ a {
 }
 #outstandingpenaltyIndicator p {
 	margin: 0;
-	font-size: x-small;
+	font-size: small;
 	text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
 }
 #outstandingpenaltyIndicator p + p {
-	font-size: 1rem;
+	font-size: x-large;
 	font-weight: bold;
 }
 #middle-middle {
@@ -231,6 +257,7 @@ a {
 #playedcards {
 	display: inline-flex;
 	margin-left: 40px;
+	width: 0;
 }
 #playedcards div {
 	width: calc(var(--card-width) / 3);
@@ -238,7 +265,6 @@ a {
 }
 #playedcards img {
 	width: var(--card-width);
-	filter: drop-shadow(0 0 8px var(--background));
 }
 .yourturn {
 	display: flex;
@@ -286,7 +312,7 @@ a {
 	display: inline-block;
 }
 .cardShadow {
-	filter: drop-shadow(0 0 6px var(--background));
+	filter: drop-shadow(0 0 8px var(--background));
 }
 .select-checkmark {
 	width: 28px;

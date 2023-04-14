@@ -263,22 +263,19 @@ function setUsername() {
 // called when clicking a card or Play Cards
 function playCards(card) {
 	const playedCards = card ? [card] : game.selectedCards;
-	if (!playCards) return console.log('no card selected');
+	if (!playedCards) console.log('no card selected');
 	socket.emit('play-cards', playedCards, async (legal, reason) => {
 		console.log('playedCards', playedCards, 'legal', legal, 'reason', reason);
 		if (!legal) {
 			const lines = (await playCrimes())[reason.toString()];
 			messagesManager.new(lines, 'red');
-		}
+			socket.emit('give-game-info');
+		} else hideCountdown();
 	});
 }
 
 // called when clicking the draw one button
-function drawOne() {
-	socket.emit('play-cards', [], (legal, reason) => {
-		console.log('playedCards', [], 'legal', legal, 'reason', reason);
-	});
-}
+const drawOne = playCards;
 
 // draws all the player boxes and red outline if avail
 function drawPlayers() {
@@ -338,6 +335,11 @@ function drawDiscardPileTopCard() {
 	div.appendChild(img);
 }
 
+// removes edges from the discard
+function removeDiscardEdge() {
+	document.getElementById('discard').firstElementChild.className = 'cardImg';
+}
+
 // draw cards in hand
 function drawHand() {
 	if (!game.hand) return;
@@ -391,16 +393,21 @@ async function animatePlayedCards() {
 		drawDiscardPileTopCard();
 		divsToRemove.forEach(x => x.remove());
 	}, initTimeout + (game.lastPlayed.length - 1) * interval + animLength);
+	removeDiscardEdge();
 	game.lastPlayed.forEach((card, i) => {
 		const div = document.createElement('div');
 		const img = document.createElement('img');
 		img.src = '/cards/' + card + '.svg';
 		img.alt = card;
+		div.classList.add('cardShadow');
 		div.appendChild(img);
 		container.appendChild(div);
 		divsToRemove.push(div);
 		setTimeout(() => {
 			div.style.transform = `translate(calc(-40px - var(--card-width) * (1 + ${i}/3)), 0)`;
+			setTimeout(() => {
+				div.classList.remove('cardShadow'); // i dont like how they stack
+			}, animLength + interval);
 		}, initTimeout + i * interval);
 	});
 }
@@ -426,7 +433,7 @@ function drawOutstandingDrawPenalty() {
 		indicator.append(p1, p2);
 		indicator.id = 'outstandingpenaltyIndicator';
 		if (game.discardPileTopCard.color) indicator.classList.add(game.discardPileTopCard.color);
-		document.getElementById('middle-left').appendChild(indicator);
+		document.getElementById('outstandingpenaltyIndicatorContainer').appendChild(indicator);
 	}
 
 	// todo: if its my turn
@@ -446,10 +453,26 @@ function drawOutstandingDrawPenalty() {
 	}
 }
 
+let hideCountdownListeners = [];
+function onHideCountdown(func) {
+	hideCountdownListeners.push(func);
+}
+function hideCountdown() {
+	document.getElementById('countdown').hidden = true;
+	hideCountdownListeners.forEach(x => {
+		try {
+			x()
+		} catch (e) {}
+	});
+}
+
 function onMyTurn() {
 	const indicator = document.getElementById('yourturnindicator');
 	if (game.myTurn) indicator.classList.add('activeturnindicator');
-	else indicator.classList.remove('activeturnindicator');
+	else {
+		indicator.classList.remove('activeturnindicator');
+		hideCountdown();
+	}
 }
 
 // when game info is received, save the data and call functions that use the new data
@@ -523,6 +546,33 @@ socket.on('play-draw-one', playdrawonePopup);
 
 // log server errors
 socket.on('connect_error', console.log);
+
+// when the player is given a time limit to play cards
+socket.on('countdown', async millis => {
+	hideCountdown();
+	const el = document.getElementById('countdown');
+	el.style.background = 'conic-gradient(var(--uno-red) 0deg 360deg)';
+	el.firstElementChild.textContent = (millis / 1000).toFixed(1) + ' s';
+	el.hidden = false;
+	let startTime = Date.now();
+	while (Date.now() < startTime + millis && !el.hidden) {
+		const elapsed = Date.now() - startTime;
+		const degs = Math.round(elapsed / millis * 360);
+		if (degs < 0) {
+			el.style.background = '';
+			el.hidden = true;
+			break;
+		}
+		el.style.background = `conic-gradient(transparent 0deg ${degs}deg, var(--uno-red) ${degs}deg 360deg)`;
+		el.firstElementChild.textContent = ((millis - elapsed) / 1000).toFixed(1) + ' s';
+		await new Promise(res => {
+			onHideCountdown(res);
+			setTimeout(res, 200);
+		});
+	}
+	el.style.background = '';
+	el.hidden = true;
+});
 
 // when game ends, tell them to reload page
 socket.on('end-game', winner => {

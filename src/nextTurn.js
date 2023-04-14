@@ -23,7 +23,9 @@ async function nextTurn(jumpedIn, beginning) {
 		try {
 			// if the timeout does not finish, ie there was a legal play-cards, stop loop and return
 			await new Promise((res, rej) => {
-				setTimeout(rej, (player.isConnected ? 45 : 18) * 1000);
+				let timeoutMillis = (player.isConnected ? 10 + player.hand.length : 10) * 1000;
+				setTimeout(rej, timeoutMillis);
+				player.socket?.emit('countdown', timeoutMillis);
 				game.addStopEverythingListener(res);
 			});
 		} catch (error) {
